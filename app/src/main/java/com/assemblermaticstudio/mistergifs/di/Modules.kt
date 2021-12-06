@@ -1,6 +1,11 @@
 package com.assemblermaticstudio.mistergifs.di
 
+import android.content.Context
 import android.util.Log
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
+import com.assemblermaticstudio.mistergifs.persistence.GifsDB
 import com.assemblermaticstudio.mistergifs.repositories.GifRepoAccess
 import com.assemblermaticstudio.mistergifs.services.GifServices
 import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
@@ -18,8 +23,8 @@ object Modules {
 
     private const val OK_HTTP = "OkHttp"
 
-    fun load() {
-        loadKoinModules(networkModules() + repositoryModules() + presentationModules())
+    fun load(applicationContext: Context) {
+        loadKoinModules(networkModules() + repositoryModules() + presentationModules() + persistenceModules(applicationContext))
     }
 
     private fun networkModules(): Module {
@@ -53,6 +58,18 @@ object Modules {
     private fun presentationModules() : Module {
         return module {
             viewModel { MainViewModel(get()) }
+        }
+    }
+
+    private fun persistenceModules(context: Context) : Module {
+        return module {
+            single<GifsDAO> {
+                val db = Room.databaseBuilder(
+                    context,
+                    GifsDB::class.java, "gifs"
+                ).build()
+                db.gifsDao()
+            }
         }
     }
 

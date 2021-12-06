@@ -30,8 +30,7 @@ class MainActivity : AppCompatActivity() {
         startKoin {
             androidContext(this@MainActivity)
         }
-        Modules.load()
-
+        Modules.load(applicationContext)
         initRecyclerView()
 
         viewModel.output.observe(this) {
