@@ -44,7 +44,7 @@
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/gifsCount_sb"
-            android:layout_width="221dp"
+            android:layout_width="198dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -81,7 +81,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainsList_rv"
         android:layout_width="match_parent"
-        android:layout_height="510dp"
+        android:layout_height="428dp"
 
         android:scrollbars="vertical"/>
 
