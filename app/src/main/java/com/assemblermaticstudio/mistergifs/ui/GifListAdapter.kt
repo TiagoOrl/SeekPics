@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.assemblermaticstudio.mistergifs.R
-import com.assemblermaticstudio.mistergifs.model.Data
+import com.assemblermaticstudio.mistergifs.model.GIF
 
 class GifListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: List<Data> = mutableListOf()
+    private var items: List<GIF> = mutableListOf()
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
         return GifViewHolder(LayoutInflater.from(p0.context).inflate(R.layout.card_item, p0, false))
@@ -28,7 +28,7 @@ class GifListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return items.size
     }
 
-    fun submitList(gifList: List<Data>) {
+    fun submitList(gifList: List<GIF>) {
         items = gifList
     }
 
@@ -38,7 +38,7 @@ class GifListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val url_embed = itemView.findViewById<TextView>(R.id.url_embed)
         val title = itemView.findViewById<TextView>(R.id.gif_title)
 
-        fun bind(gif: Data){
+        fun bind(gif: GIF){
             url_embed.text = gif.embed_url
             title.text = gif.title
         }

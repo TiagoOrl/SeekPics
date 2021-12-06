@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 is MainViewModel.State.Success -> {
                     dialog.dismiss()
-                    adapter.submitList(it.gifObject.data)
+                    adapter.submitList(it.dataObject.data)
                     adapter.notifyDataSetChanged()
                 }
             }
