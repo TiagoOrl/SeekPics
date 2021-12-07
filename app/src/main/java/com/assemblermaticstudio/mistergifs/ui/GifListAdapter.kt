@@ -3,10 +3,12 @@ package com.assemblermaticstudio.mistergifs.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.model.GIF
+import com.bumptech.glide.Glide
 
 class GifListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -35,12 +37,20 @@ class GifListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class GifViewHolder constructor(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
-        val url_embed = itemView.findViewById<TextView>(R.id.url_embed)
+//        val url_embed = itemView.findViewById<TextView>(R.id.url_embed)
         val title = itemView.findViewById<TextView>(R.id.gif_title)
+        val gif_main = itemView.findViewById<ImageView>(R.id.gif_main)
 
         fun bind(gif: GIF){
-            url_embed.text = gif.embed_url
+//            url_embed.text = gif.embed_url
+            Glide
+                .with(itemView.context)
+                .load(gif.images.original.url)
+                .error(R.drawable.ic_launcher_background)
+                .into(gif_main)
+
             title.text = gif.title
+
         }
     }
 
