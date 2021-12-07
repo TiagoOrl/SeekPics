@@ -24,7 +24,7 @@ object Modules {
     private const val OK_HTTP = "OkHttp"
 
     fun load(applicationContext: Context) {
-        loadKoinModules(networkModules() + repositoryModules() + presentationModules() + persistenceModules(applicationContext))
+        loadKoinModules(persistenceModules(applicationContext) + networkModules() + repositoryModules() + presentationModules())
     }
 
     private fun networkModules(): Module {
@@ -51,7 +51,7 @@ object Modules {
     }
     private fun repositoryModules() : Module {
         return module {
-            single<GifRepoAccess> {GifRepoAccess(get())}
+            single<GifRepoAccess> {GifRepoAccess(get(), get())}
         }
     }
 

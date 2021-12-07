@@ -4,8 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.assemblermaticstudio.mistergifs.model.Data
+import com.assemblermaticstudio.mistergifs.model.GIF
 import com.assemblermaticstudio.mistergifs.repositories.GifRepoAccess
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
@@ -17,7 +21,7 @@ class MainViewModel(private val gifRepoAccess: GifRepoAccess) : ViewModel() {
     val output: LiveData<State> = _output
 
     fun searchGif(name: String, limit: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             gifRepoAccess.querySeachText(name, limit)
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
@@ -26,7 +30,7 @@ class MainViewModel(private val gifRepoAccess: GifRepoAccess) : ViewModel() {
     }
 
     fun getTrendingGifs(limit: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             gifRepoAccess.queryTrending(limit)
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
@@ -34,9 +38,19 @@ class MainViewModel(private val gifRepoAccess: GifRepoAccess) : ViewModel() {
         }
     }
 
+    fun queryGifs() {
+        viewModelScope.launch(Dispatchers.IO) {
+            gifRepoAccess.queryAllGifsFromDB()
+                .onStart { _output.postValue(State.Loading) }
+                .catch { _output.postValue(State.Error(it)) }
+                .collect { _output.postValue(State.SuccessQueryDB(it)) }
+        }
+    }
+
     sealed class State {
         object Loading : State()
         data class Success(val dataObject: Data) : State()
+        data class SuccessQueryDB(val dataObject: List<GIF>) : State()
         data class Error(val error: Throwable) : State()
     }
 }

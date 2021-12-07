@@ -47,6 +47,11 @@ class MainActivity : AppCompatActivity() {
                     adapter.submitList(it.dataObject.data)
                     adapter.notifyDataSetChanged()
                 }
+                is MainViewModel.State.SuccessQueryDB -> {
+                    dialog.dismiss()
+                    adapter.submitList(it.dataObject)
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
 
@@ -84,6 +89,8 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+        viewModel.queryGifs()
     }
 
     private fun initRecyclerView() {

@@ -14,6 +14,6 @@ interface GifsDAO {
     fun insertAll(gifs_list: List<GIF>)
 
     @Query("SELECT * FROM gif")
-    fun load(): Flow<List<GIF>>
+    fun loadAllGifs(): List<GIF>
 
 }
