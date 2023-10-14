@@ -16,5 +16,6 @@ interface GifServices {
     @GET("v1/gifs/trending")
     suspend fun getTrendingGifs(
         @Query("api_key") key: String = "HSI8cCsrvwXUCxvsGvW3gXvFEoIfNJ6w",
-        @Query("limit") limit: Int): Data
+        @Query("limit") limit: Int
+    ): Data
 }

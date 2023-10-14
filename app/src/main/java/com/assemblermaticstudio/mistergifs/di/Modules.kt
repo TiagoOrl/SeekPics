@@ -3,7 +3,6 @@ package com.assemblermaticstudio.mistergifs.di
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
 import com.assemblermaticstudio.mistergifs.persistence.GifsDB
 import com.assemblermaticstudio.mistergifs.repositories.GifRepoAccess
@@ -24,7 +23,7 @@ object Modules {
     private const val OK_HTTP = "OkHttp"
 
     fun load(applicationContext: Context) {
-        loadKoinModules(persistenceModules(applicationContext) + networkModules() + repositoryModules() + presentationModules())
+        loadKoinModules(createRoomService(applicationContext) + networkModules() + repositoryModules() + presentationModules())
     }
 
     private fun networkModules(): Module {
@@ -45,7 +44,7 @@ object Modules {
             }
 
             single {
-                createService<GifServices>(get(), get())
+                createRetrofitService<GifServices>(get(), get())
             }
         }
     }
@@ -61,7 +60,7 @@ object Modules {
         }
     }
 
-    private fun persistenceModules(context: Context) : Module {
+    private fun createRoomService(context: Context) : Module {
         return module {
             single<GifsDAO> {
                 val db = Room.databaseBuilder(
@@ -75,7 +74,7 @@ object Modules {
 
 
 
-    private inline fun <reified T> createService(okHttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory): T {
+    private inline fun <reified T> createRetrofitService(okHttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory): T {
         return Retrofit.Builder()
             .baseUrl("https://api.giphy.com/")
             .client(okHttpClient)
