@@ -6,12 +6,12 @@ plugins {
 
 android {
     apply plugin: 'kotlin-kapt'
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.assemblermaticstudio.mistergifs"
         minSdk 21
-        targetSdk 31
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -71,5 +71,8 @@ dependencies {
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+
+
 
 }

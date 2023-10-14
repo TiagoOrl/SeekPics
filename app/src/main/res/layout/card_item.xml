@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
@@ -12,35 +11,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-<!--        <TextView-->
-<!--            android:id="@+id/url_embed"-->
-<!--            android:layout_width="246dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:textSize="15sp"/>-->
-
         <ImageView
-            android:id="@+id/gif_main"
+            android:id="@+id/iv_gif"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
             android:textSize="15sp"/>
 
         <TextView
-            android:id="@+id/gif_title"
-            android:layout_width="120dp"
+            android:id="@+id/tv_gif_title"
+            android:layout_width="190sp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@id/gif_main"
-            app:layout_constraintStart_toStartOf="@id/gif_main"
+            android:text="Text Title"
+            app:layout_constraintTop_toBottomOf="@id/iv_gif"
+            app:layout_constraintStart_toStartOf="@id/iv_gif"
             android:layout_marginBottom="10dp"
+            />
+
+        <ImageView
+            android:id="@+id/iv_fav_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/add_fav"
+            app:layout_constraintTop_toTopOf="@+id/iv_share_btn"
+            app:layout_constraintEnd_toStartOf="@+id/iv_share_btn"
+            android:layout_marginHorizontal="4sp"
+            android:layout_marginBottom="5sp" />
+
+        <ImageView
+            android:id="@+id/iv_share_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="4sp"
+            android:layout_marginBottom="5sp"
             />
 
 

@@ -38,8 +38,8 @@ class GifListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 //        val url_embed = itemView.findViewById<TextView>(R.id.url_embed)
-        val title = itemView.findViewById<TextView>(R.id.gif_title)
-        val gif_main = itemView.findViewById<ImageView>(R.id.gif_main)
+        val title = itemView.findViewById<TextView>(R.id.tv_gif_title)
+        val gif_main = itemView.findViewById<ImageView>(R.id.iv_gif)
 
         fun bind(gif: GIF){
 //            url_embed.text = gif.embed_url
