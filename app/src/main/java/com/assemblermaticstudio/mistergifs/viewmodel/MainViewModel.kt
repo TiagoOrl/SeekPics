@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.assemblermaticstudio.mistergifs.model.Data
 import com.assemblermaticstudio.mistergifs.model.GIF
 import com.assemblermaticstudio.mistergifs.repositories.GifRepoAccess
@@ -22,7 +20,7 @@ class MainViewModel(private val gifRepoAccess: GifRepoAccess) : ViewModel() {
 
     fun searchGif(name: String, limit: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            gifRepoAccess.querySeachText(name, limit)
+            gifRepoAccess.querySearchText(name, limit)
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
                 .collect { _output.postValue(State.Success(it)) }

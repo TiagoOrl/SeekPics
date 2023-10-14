@@ -15,7 +15,7 @@ import org.koin.core.context.startKoin
 
 class MainActivity : AppCompatActivity() {
 
-    private val dialog by lazy { createProgressDialog() }
+    private val loadingDialog by lazy { createProgressDialog() }
     private val viewModel by viewModel<MainViewModel>()
     private val adapter by lazy { GifListAdapter() }
     private lateinit var binding: ActivityMainBinding
@@ -35,20 +35,20 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.output.observe(this) {
             when(it) {
-                MainViewModel.State.Loading -> dialog.show()
+                MainViewModel.State.Loading -> loadingDialog.show()
                 is MainViewModel.State.Error -> {
                     createDialog {
                         setMessage(it.error.message)
                     }.show()
-                    dialog.dismiss()
+                    loadingDialog.dismiss()
                 }
                 is MainViewModel.State.Success -> {
-                    dialog.dismiss()
+                    loadingDialog.dismiss()
                     adapter.submitList(it.dataObject.data)
                     adapter.notifyDataSetChanged()
                 }
                 is MainViewModel.State.SuccessQueryDB -> {
-                    dialog.dismiss()
+                    loadingDialog.dismiss()
                     adapter.submitList(it.dataObject)
                     adapter.notifyDataSetChanged()
                 }
@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         initViews()
-
     }
 
     private fun initViews() {
@@ -76,16 +75,18 @@ class MainActivity : AppCompatActivity() {
         binding.gifsCountSb.max = 22
         binding.gifsCountSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                binding.counSelTv.text = p1.toString()
+                val pos = p1 + 1
+                binding.counSelTv.text = pos.toString()
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
-                binding.counSelTv.text = p0?.progress.toString()
+                val pos = p0?.progress?.plus(1)
+                binding.counSelTv.text = pos.toString()
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-                if (p0!!.progress < 1) p0.progress = 1
-                binding.counSelTv.text = p0.progress.toString()
+                val pos = p0?.progress?.plus(1)
+                binding.counSelTv.text = pos.toString()
             }
 
         })

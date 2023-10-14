@@ -14,7 +14,7 @@ class GifRepoAccess(
     private val service: GifServices,
     private val dao: GifsDAO
 ) {
-    suspend fun querySeachText(query: String, limit: Int) = flow<Data> {
+    suspend fun querySearchText(query: String, limit: Int) = flow<Data> {
         try {
             val outList = service.getGifs(query, limit)
             dao.insertAll(outList.data)

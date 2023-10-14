@@ -16,6 +16,4 @@ data class GIF(
     @SerializedName("images")
     @Embedded
     val images: Images
-
-
 )
