@@ -16,7 +16,7 @@ class FavGifsFragment : Fragment(R.layout.fragment_favourite_gifs) {
     private lateinit var binding: FragmentFavouriteGifsBinding
     private val loadingDialog by lazy { HelperUI.createProgressDialog(context) }
     private val viewModel by viewModel<MainViewModel>()
-    private val adapter by lazy { GifListAdapter() }
+    private val adapter by lazy { GifListAdapter(viewModel) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
