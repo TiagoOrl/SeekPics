@@ -1,6 +1,7 @@
 package com.assemblermaticstudio.mistergifs.ui.adapters
 
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -66,6 +67,17 @@ class GifListAdapter(
                     it.setBackgroundResource(R.drawable.add_fav)
                 }
                 notifyDataSetChanged()
+            }
+
+            ivShareBtn.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, gif.embedUrl)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                binding.root.context.startActivity(shareIntent)
             }
         }
     }
