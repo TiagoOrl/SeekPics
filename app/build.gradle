@@ -6,12 +6,12 @@ plugins {
 
 android {
     apply plugin: 'kotlin-kapt'
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.assemblermaticstudio.mistergifs"
         minSdk 21
-        targetSdk 31
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -40,7 +40,7 @@ android {
 
 dependencies {
 
-    def room_version = "2.3.0"
+    def room_version = "2.4.3"
 
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -67,9 +67,12 @@ dependencies {
 
     //lifecycle @see https://developer.android.com/topic/libraries/architecture/lifecycle?hl=pt-Br#lc
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0"
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+
+
 
 }

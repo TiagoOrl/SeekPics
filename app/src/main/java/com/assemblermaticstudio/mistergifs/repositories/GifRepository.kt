@@ -1,16 +1,17 @@
 package com.assemblermaticstudio.mistergifs.repositories
 
 import android.os.RemoteException
+import androidx.annotation.WorkerThread
 import com.assemblermaticstudio.mistergifs.model.Data
 import com.assemblermaticstudio.mistergifs.model.GIF
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
 import com.assemblermaticstudio.mistergifs.services.GifServices
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
-import java.lang.Exception
+import kotlin.Exception
 
 
-class GifRepoAccess(
+class GifRepository(
     private val service: GifServices,
     private val dao: GifsDAO
 ) {
@@ -45,4 +46,20 @@ class GifRepoAccess(
             throw Exception(ex.message)
         }
     }
+
+    suspend fun getFavGifs() = flow<List<GIF>> {
+        try {
+            val outList = dao.queryFavGifs()
+            emit(outList)
+        } catch (ex: Exception) {
+            throw Exception(ex.message)
+        }
+    }
+
+    @WorkerThread
+    suspend fun toggleFavourite(gif: GIF) {
+        dao.update(gif)
+    }
+
+
 }
