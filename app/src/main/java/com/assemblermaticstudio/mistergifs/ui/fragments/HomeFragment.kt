@@ -60,10 +60,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     adapter.submitList(it.dataObject)
                     adapter.notifyDataSetChanged()
                 }
+                is MainViewModel.State.SuccessEmpty -> {
+                    loadingDialog.dismiss()
+                    viewModel.getTrendingGifs(5)
+                }
             }
         }
         initViews()
-        viewModel.getTrendingGifs(5)
+        viewModel.getAllLocalGifs()
     }
 
     private fun initRecyclerView() {

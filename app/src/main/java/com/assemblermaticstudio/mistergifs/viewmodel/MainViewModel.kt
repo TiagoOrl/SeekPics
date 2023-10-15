@@ -40,7 +40,12 @@ class MainViewModel(private val gifRepository: GifRepository) : ViewModel() {
             gifRepository.queryAllGifsFromDB()
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
-                .collect { _output.postValue(State.SuccessQueryDB(it)) }
+                .collect {
+                    if (it.isEmpty())
+                        _output.postValue(State.SuccessEmpty)
+                    else
+                        _output.postValue(State.SuccessQueryDB(it))
+                }
         }
     }
 
@@ -65,6 +70,7 @@ class MainViewModel(private val gifRepository: GifRepository) : ViewModel() {
         data class Success(val dataObject: Data) : State()
         data class SuccessQuery(val list: List<GIF>) : State()
         data class SuccessQueryDB(val dataObject: List<GIF>) : State()
+        object SuccessEmpty : State()
         data class Error(val error: Throwable) : State()
     }
 }
