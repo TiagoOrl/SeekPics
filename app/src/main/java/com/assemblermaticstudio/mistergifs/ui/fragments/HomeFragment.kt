@@ -11,7 +11,7 @@ import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.utils.HelperUI
 import com.assemblermaticstudio.mistergifs.databinding.FragmentHomeBinding
 import com.assemblermaticstudio.mistergifs.di.Modules
-import com.assemblermaticstudio.mistergifs.ui.GifListAdapter
+import com.assemblermaticstudio.mistergifs.ui.adapters.GifListAdapter
 import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,7 +23,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val loadingDialog by lazy { HelperUI.createProgressDialog(context) }
     private val viewModel by viewModel<MainViewModel>()
     private val adapter by lazy { GifListAdapter(viewModel) }
-    private val favGifsFragment: FavGifsFragment = FavGifsFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,9 +54,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     adapter.submitList(it.dataObject.data)
                     adapter.notifyDataSetChanged()
                 }
-                is MainViewModel.State.SuccessQueryDB -> {
+                is MainViewModel.State.SuccessQuery -> {
                     loadingDialog.dismiss()
-                    adapter.submitList(it.dataObject)
+                    adapter.submitList(it.list)
                     adapter.notifyDataSetChanged()
                 }
                 is MainViewModel.State.SuccessEmpty -> {
@@ -112,16 +111,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
 
         binding.chpFavsBtn.setOnClickListener {
-            val fragmentManager = requireActivity().supportFragmentManager
-
-            // !!don't forget to call addToBackStack and setReorderingAllowed, so latter popBackStack() works
-            if (!fragmentManager.fragments.contains(favGifsFragment))
-                fragmentManager
-                    .beginTransaction()
-                    .addToBackStack(null)
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragment_main, favGifsFragment)
-                    .commit()
+            viewModel.getFavouriteGifs()
         }
     }
 }

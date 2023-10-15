@@ -44,7 +44,7 @@ class MainViewModel(private val gifRepository: GifRepository) : ViewModel() {
                     if (it.isEmpty())
                         _output.postValue(State.SuccessEmpty)
                     else
-                        _output.postValue(State.SuccessQueryDB(it))
+                        _output.postValue(State.SuccessQuery(it))
                 }
         }
     }
@@ -68,8 +68,7 @@ class MainViewModel(private val gifRepository: GifRepository) : ViewModel() {
     sealed class State {
         object Loading : State()
         data class Success(val dataObject: Data) : State()
-        data class SuccessQuery(val list: List<GIF>) : State()
-        data class SuccessQueryDB(val dataObject: List<GIF>) : State()
+        data class SuccessQuery(val list: ArrayList<GIF>) : State()
         object SuccessEmpty : State()
         data class Error(val error: Throwable) : State()
     }

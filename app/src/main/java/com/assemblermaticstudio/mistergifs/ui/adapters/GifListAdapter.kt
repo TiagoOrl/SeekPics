@@ -1,6 +1,6 @@
-package com.assemblermaticstudio.mistergifs.ui
+package com.assemblermaticstudio.mistergifs.ui.adapters
 
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,14 +16,14 @@ class GifListAdapter(
     private val mainViewModel: MainViewModel
 ) : RecyclerView.Adapter<GifListAdapter.GifViewHolder>() {
 
-    private var items: List<GIF> = mutableListOf()
+    private var items: ArrayList<GIF> = arrayListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): GifListAdapter.GifViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): GifViewHolder {
         val binding: CardGifItemBinding = CardGifItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return GifViewHolder(binding, mainViewModel)
+        return GifViewHolder(binding)
     }
 
-    override fun onBindViewHolder(p0: GifListAdapter.GifViewHolder, index: Int) {
+    override fun onBindViewHolder(p0: GifViewHolder, index: Int) {
         p0.bind(items[index])
     }
 
@@ -31,13 +31,12 @@ class GifListAdapter(
         return items.size
     }
 
-    fun submitList(gifList: List<GIF>) {
+    fun submitList(gifList: ArrayList<GIF>) {
         items = gifList
     }
 
     inner class GifViewHolder (
-        private val binding: CardGifItemBinding,
-        mainViewModel: MainViewModel
+        private val binding: CardGifItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         private val tvTitle: TextView = binding.tvGifTitle
         private val ivGif: ImageView = binding.ivGif
@@ -62,11 +61,12 @@ class GifListAdapter(
                 mainViewModel.toggleFavourite(gif)
                 if (gif.fav)
                     it.setBackgroundResource(R.drawable.fav)
-                else
+                else {
+                    items.remove(gif)
                     it.setBackgroundResource(R.drawable.add_fav)
-                Log.d("LIST ADAPTER", "Gif Favourite Toggled...")
+                }
+                notifyDataSetChanged()
             }
-
         }
     }
 }

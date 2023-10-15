@@ -37,20 +37,20 @@ class GifRepository(
         }
     }
 
-    suspend fun queryAllGifsFromDB() = flow<List<GIF>> {
+    suspend fun queryAllGifsFromDB() = flow<ArrayList<GIF>> {
         try {
             val outList = dao.loadAllGifs()
-            emit(outList)
+            emit(outList as ArrayList<GIF>)
 
         } catch (ex: Exception) {
             throw Exception(ex.message)
         }
     }
 
-    suspend fun getFavGifs() = flow<List<GIF>> {
+    suspend fun getFavGifs() = flow<ArrayList<GIF>> {
         try {
             val outList = dao.queryFavGifs()
-            emit(outList)
+            emit(outList as ArrayList<GIF>)
         } catch (ex: Exception) {
             throw Exception(ex.message)
         }
