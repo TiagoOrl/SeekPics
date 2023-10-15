@@ -1,6 +1,7 @@
 package com.assemblermaticstudio.mistergifs.repositories
 
 import android.os.RemoteException
+import androidx.annotation.WorkerThread
 import com.assemblermaticstudio.mistergifs.model.Data
 import com.assemblermaticstudio.mistergifs.model.GIF
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
@@ -10,7 +11,7 @@ import retrofit2.HttpException
 import java.lang.Exception
 
 
-class GifRepoAccess(
+class GifRepository(
     private val service: GifServices,
     private val dao: GifsDAO
 ) {
@@ -45,4 +46,11 @@ class GifRepoAccess(
             throw Exception(ex.message)
         }
     }
+
+    @WorkerThread
+    suspend fun addFavourite(gif: GIF) {
+        dao.update(gif)
+    }
+
+
 }

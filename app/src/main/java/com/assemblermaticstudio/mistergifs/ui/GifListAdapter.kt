@@ -9,15 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.databinding.CardGifItemBinding
 import com.assemblermaticstudio.mistergifs.model.GIF
+import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
 import com.bumptech.glide.Glide
 
-class GifListAdapter : RecyclerView.Adapter<GifListAdapter.GifViewHolder>() {
+class GifListAdapter(
+    private val mainViewModel: MainViewModel
+) : RecyclerView.Adapter<GifListAdapter.GifViewHolder>() {
 
     private var items: List<GIF> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): GifListAdapter.GifViewHolder {
         val binding: CardGifItemBinding = CardGifItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return GifViewHolder(binding)
+        return GifViewHolder(binding, mainViewModel)
     }
 
     override fun onBindViewHolder(p0: GifListAdapter.GifViewHolder, index: Int) {
@@ -32,11 +35,14 @@ class GifListAdapter : RecyclerView.Adapter<GifListAdapter.GifViewHolder>() {
         items = gifList
     }
 
-    inner class GifViewHolder constructor(
-        binding: CardGifItemBinding
+    inner class GifViewHolder (
+        binding: CardGifItemBinding,
+        mainViewModel: MainViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
         private val tvTitle: TextView = binding.tvGifTitle
         private val ivGif: ImageView = binding.ivGif
+        private val ivFavBtn: ImageView = binding.ivFavButton
+        private val ivShareBtn: ImageView = binding.ivShareBtn
 
         fun bind(gif: GIF){
             Glide
@@ -47,8 +53,11 @@ class GifListAdapter : RecyclerView.Adapter<GifListAdapter.GifViewHolder>() {
 
             tvTitle.text = gif.title
 
+            ivFavBtn.setOnClickListener {
+                mainViewModel.setAsFavourite(gif)
+            }
+
         }
     }
-
 }
 

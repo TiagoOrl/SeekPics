@@ -24,7 +24,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
     private val loadingDialog by lazy { createProgressDialog(context) }
     private val viewModel by viewModel<MainViewModel>()
-    private val adapter by lazy { GifListAdapter() }
+    private val adapter by lazy { GifListAdapter(viewModel) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

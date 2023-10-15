@@ -19,6 +19,6 @@ interface GifsDAO {
         " WHERE fav = 1")
     fun getFavGifs(): List<GIF>
 
-//    @Update
-//    suspend fun update(gif: GIF)
+    @Update
+    suspend fun update(gif: GIF)
 }

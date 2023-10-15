@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.room.Room
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
 import com.assemblermaticstudio.mistergifs.persistence.GifsDB
-import com.assemblermaticstudio.mistergifs.repositories.GifRepoAccess
+import com.assemblermaticstudio.mistergifs.repositories.GifRepository
 import com.assemblermaticstudio.mistergifs.services.GifServices
 import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
 import com.google.gson.GsonBuilder
@@ -50,7 +50,7 @@ object Modules {
     }
     private fun repositoryModules() : Module {
         return module {
-            single<GifRepoAccess> {GifRepoAccess(get(), get())}
+            single<GifRepository> {GifRepository(get(), get())}
         }
     }
 
