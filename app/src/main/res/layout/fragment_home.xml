@@ -92,7 +92,7 @@
             android:layout_marginStart="50dp"
             android:textSize="20sp"
             app:chipBackgroundColor="#F8CA7B"
-            android:text="Favourites"
+            android:text="Show Favourites"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -13,7 +13,7 @@ data class GIF(
     @PrimaryKey
     val id: String,
     @SerializedName("embed_url")
-    val embed_url: String,
+    val embedUrl: String,
     @SerializedName("title")
     val title: String,
     @SerializedName("images")

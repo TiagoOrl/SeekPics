@@ -9,7 +9,6 @@ import com.assemblermaticstudio.mistergifs.model.GIF
 import com.assemblermaticstudio.mistergifs.repositories.GifRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
@@ -36,12 +35,17 @@ class MainViewModel(private val gifRepository: GifRepository) : ViewModel() {
         }
     }
 
-    fun queryGifs() {
+    fun getAllLocalGifs() {
         viewModelScope.launch(Dispatchers.IO) {
             gifRepository.queryAllGifsFromDB()
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
-                .collect { _output.postValue(State.SuccessQueryDB(it)) }
+                .collect {
+                    if (it.isEmpty())
+                        _output.postValue(State.SuccessEmpty)
+                    else
+                        _output.postValue(State.SuccessQuery(it))
+                }
         }
     }
 
@@ -64,8 +68,8 @@ class MainViewModel(private val gifRepository: GifRepository) : ViewModel() {
     sealed class State {
         object Loading : State()
         data class Success(val dataObject: Data) : State()
-        data class SuccessQuery(val list: List<GIF>) : State()
-        data class SuccessQueryDB(val dataObject: List<GIF>) : State()
+        data class SuccessQuery(val list: ArrayList<GIF>) : State()
+        object SuccessEmpty : State()
         data class Error(val error: Throwable) : State()
     }
 }
