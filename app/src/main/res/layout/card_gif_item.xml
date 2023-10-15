@@ -36,27 +36,27 @@
 
         <ImageView
             android:id="@+id/iv_fav_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/add_fav"
             app:layout_constraintTop_toTopOf="@+id/iv_share_btn"
             app:layout_constraintEnd_toStartOf="@+id/iv_share_btn"
-            android:layout_marginHorizontal="4sp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginBottom="5sp" />
 
         <ImageView
             android:id="@+id/iv_share_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/share"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginHorizontal="4sp"
-            android:layout_marginBottom="5sp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="10dp"
             />
 
 

@@ -1,6 +1,7 @@
 package com.assemblermaticstudio.mistergifs.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +48,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when(it) {
                 MainViewModel.State.Loading -> loadingDialog.show()
                 is MainViewModel.State.Error -> {
-                    createDialog(it.error.message, requireContext())
+                    createDialog(it.error.message, requireContext()).show()
                     loadingDialog.dismiss()
                 }
                 is MainViewModel.State.Success -> {
@@ -63,6 +64,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
         initViews()
+        viewModel.queryGifs()
     }
 
     private fun initRecyclerView() {
@@ -102,7 +104,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
 
         })
-
-        viewModel.queryGifs()
     }
 }

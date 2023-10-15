@@ -22,8 +22,5 @@ class MainActivity : AppCompatActivity() {
             .setReorderingAllowed(true)
             .add(R.id.fragment_main, homeFragment)
             .commit()
-
-
-
     }
 }
