@@ -1,7 +1,6 @@
 package com.assemblermaticstudio.mistergifs.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,7 @@ import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.assemblermaticstudio.mistergifs.R
-import com.assemblermaticstudio.mistergifs.utils.HelperUI.Companion.createDialog
-import com.assemblermaticstudio.mistergifs.utils.HelperUI.Companion.createProgressDialog
+import com.assemblermaticstudio.mistergifs.utils.HelperUI
 import com.assemblermaticstudio.mistergifs.databinding.FragmentHomeBinding
 import com.assemblermaticstudio.mistergifs.di.Modules
 import com.assemblermaticstudio.mistergifs.ui.GifListAdapter
@@ -22,7 +20,7 @@ import org.koin.core.context.startKoin
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
-    private val loadingDialog by lazy { createProgressDialog(context) }
+    private val loadingDialog by lazy { HelperUI.createProgressDialog(context) }
     private val viewModel by viewModel<MainViewModel>()
     private val adapter by lazy { GifListAdapter(viewModel) }
     private val favGifsFragment: FavGifsFragment = FavGifsFragment()
@@ -49,7 +47,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when(it) {
                 MainViewModel.State.Loading -> loadingDialog.show()
                 is MainViewModel.State.Error -> {
-                    createDialog(it.error.message, requireContext()).show()
+                    HelperUI.createDialog(it.error.message, requireContext()).show()
                     loadingDialog.dismiss()
                 }
                 is MainViewModel.State.Success -> {
@@ -65,7 +63,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
         initViews()
-        viewModel.queryGifs()
+        viewModel.getTrendingGifs(5)
     }
 
     private fun initRecyclerView() {
@@ -75,6 +73,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun initViews() {
         binding.findGif.setOnClickListener {
+            HelperUI.closeKeyboard(requireActivity());
             if (binding.counSelTv.text.toString().toInt() < 1)
                 binding.counSelTv.text = 1.toString()
             if (!binding.searchEt.text.toString().equals(""))
@@ -82,6 +81,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         binding.trendingBtn.setOnClickListener {
+            HelperUI.closeKeyboard(requireActivity());
             if (binding.counSelTv.text.toString().toInt() < 1)
                 binding.counSelTv.text = 1.toString()
             viewModel.getTrendingGifs(binding.counSelTv.text.toString().toInt())
@@ -90,6 +90,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.gifsCountSb.max = 22
         binding.gifsCountSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                HelperUI.closeKeyboard(requireActivity());
                 val pos = p1 + 1
                 binding.counSelTv.text = pos.toString()
             }

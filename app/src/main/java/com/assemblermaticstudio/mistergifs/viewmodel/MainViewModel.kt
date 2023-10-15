@@ -9,7 +9,6 @@ import com.assemblermaticstudio.mistergifs.model.GIF
 import com.assemblermaticstudio.mistergifs.repositories.GifRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
@@ -36,7 +35,7 @@ class MainViewModel(private val gifRepository: GifRepository) : ViewModel() {
         }
     }
 
-    fun queryGifs() {
+    fun getAllLocalGifs() {
         viewModelScope.launch(Dispatchers.IO) {
             gifRepository.queryAllGifsFromDB()
                 .onStart { _output.postValue(State.Loading) }
