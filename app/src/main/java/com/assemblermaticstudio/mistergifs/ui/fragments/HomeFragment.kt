@@ -25,6 +25,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val loadingDialog by lazy { createProgressDialog(context) }
     private val viewModel by viewModel<MainViewModel>()
     private val adapter by lazy { GifListAdapter(viewModel) }
+    private val favGifsFragment: FavGifsFragment = FavGifsFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,5 +105,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
 
         })
+
+        binding.chpFavsBtn.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+
+            if (!fragmentManager.fragments.contains(favGifsFragment))
+                fragmentManager
+                    .beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_main, favGifsFragment)
+                    .commit()
+        }
     }
 }

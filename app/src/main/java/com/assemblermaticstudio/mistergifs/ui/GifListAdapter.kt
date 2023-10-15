@@ -1,7 +1,7 @@
 package com.assemblermaticstudio.mistergifs.ui
 
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -36,7 +36,7 @@ class GifListAdapter(
     }
 
     inner class GifViewHolder (
-        binding: CardGifItemBinding,
+        private val binding: CardGifItemBinding,
         mainViewModel: MainViewModel
     ) : RecyclerView.ViewHolder(binding.root) {
         private val tvTitle: TextView = binding.tvGifTitle
@@ -53,8 +53,18 @@ class GifListAdapter(
 
             tvTitle.text = gif.title
 
+            if (gif.fav)
+                binding.ivFavButton.setBackgroundResource(R.drawable.fav)
+            else
+                binding.ivFavButton.setBackgroundResource(R.drawable.add_fav)
+
             ivFavBtn.setOnClickListener {
-                mainViewModel.setAsFavourite(gif)
+                mainViewModel.toggleFavourite(gif)
+                if (gif.fav)
+                    it.setBackgroundResource(R.drawable.fav)
+                else
+                    it.setBackgroundResource(R.drawable.add_fav)
+                Log.d("LIST ADAPTER", "Gif Favourite Toggled...")
             }
 
         }

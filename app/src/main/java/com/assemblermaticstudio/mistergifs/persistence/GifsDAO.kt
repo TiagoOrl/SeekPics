@@ -17,7 +17,7 @@ interface GifsDAO {
 
     @Query("SELECT * FROM gif" +
         " WHERE fav = 1")
-    fun getFavGifs(): List<GIF>
+    fun queryFavGifs(): List<GIF>
 
     @Update
     suspend fun update(gif: GIF)

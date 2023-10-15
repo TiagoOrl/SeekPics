@@ -8,7 +8,7 @@ import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
 import com.assemblermaticstudio.mistergifs.services.GifServices
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
-import java.lang.Exception
+import kotlin.Exception
 
 
 class GifRepository(
@@ -47,8 +47,17 @@ class GifRepository(
         }
     }
 
+    suspend fun getFavGifs() = flow<List<GIF>> {
+        try {
+            val outList = dao.queryFavGifs()
+            emit(outList)
+        } catch (ex: Exception) {
+            throw Exception(ex.message)
+        }
+    }
+
     @WorkerThread
-    suspend fun addFavourite(gif: GIF) {
+    suspend fun toggleFavourite(gif: GIF) {
         dao.update(gif)
     }
 

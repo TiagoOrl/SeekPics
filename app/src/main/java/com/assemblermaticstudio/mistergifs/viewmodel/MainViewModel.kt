@@ -45,16 +45,26 @@ class MainViewModel(private val gifRepository: GifRepository) : ViewModel() {
         }
     }
 
-    fun setAsFavourite(gif: GIF) {
+    fun toggleFavourite(gif: GIF) {
         viewModelScope.launch {
-            gif.fav = true
-            gifRepository.addFavourite(gif)
+            gif.fav = !gif.fav
+            gifRepository.toggleFavourite(gif)
+        }
+    }
+
+    fun getFavouriteGifs() {
+        viewModelScope.launch(Dispatchers.IO) {
+            gifRepository.getFavGifs()
+                .onStart { _output.postValue(State.Loading) }
+                .catch { _output.postValue(State.Error(it)) }
+                .collect{ _output.postValue(State.SuccessQuery(it)) }
         }
     }
 
     sealed class State {
         object Loading : State()
         data class Success(val dataObject: Data) : State()
+        data class SuccessQuery(val list: List<GIF>) : State()
         data class SuccessQueryDB(val dataObject: List<GIF>) : State()
         data class Error(val error: Throwable) : State()
     }
