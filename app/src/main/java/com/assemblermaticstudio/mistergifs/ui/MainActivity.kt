@@ -18,8 +18,11 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+
+        // !!don't forget to call addToBackStack and setReorderingAllowed, so latter popBackStack() works
         supportFragmentManager
             .beginTransaction()
+            .addToBackStack(null)
             .setReorderingAllowed(true)
             .add(R.id.fragment_main, homeFragment)
             .commit()

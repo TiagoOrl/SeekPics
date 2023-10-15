@@ -109,9 +109,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.chpFavsBtn.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
 
+            // !!don't forget to call addToBackStack and setReorderingAllowed, so latter popBackStack() works
             if (!fragmentManager.fragments.contains(favGifsFragment))
                 fragmentManager
                     .beginTransaction()
+                    .addToBackStack(null)
                     .setReorderingAllowed(true)
                     .add(R.id.fragment_main, favGifsFragment)
                     .commit()
