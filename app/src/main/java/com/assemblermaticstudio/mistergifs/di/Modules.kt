@@ -6,7 +6,7 @@ import androidx.room.Room
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
 import com.assemblermaticstudio.mistergifs.persistence.GifsDB
 import com.assemblermaticstudio.mistergifs.repositories.GifRepository
-import com.assemblermaticstudio.mistergifs.services.GifServices
+import com.assemblermaticstudio.mistergifs.services.GifService
 import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -23,7 +23,7 @@ object Modules {
     private const val OK_HTTP = "OkHttp"
 
     fun load(applicationContext: Context) {
-        loadKoinModules(createRoomService(applicationContext) + networkModules() + repositoryModules() + presentationModules())
+        loadKoinModules(createRoomService(applicationContext) + networkModules() + repositoryModules() + viewModelModules())
     }
 
     private fun networkModules(): Module {
@@ -44,7 +44,7 @@ object Modules {
             }
 
             single {
-                createRetrofitService<GifServices>(get(), get())
+                createRetrofitService<GifService>(get(), get())
             }
         }
     }
@@ -54,7 +54,7 @@ object Modules {
         }
     }
 
-    private fun presentationModules() : Module {
+    private fun viewModelModules() : Module {
         return module {
             viewModel { MainViewModel(get()) }
         }
@@ -72,8 +72,6 @@ object Modules {
         }
     }
 
-
-
     private inline fun <reified T> createRetrofitService(okHttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory): T {
         return Retrofit.Builder()
             .baseUrl("https://api.giphy.com/")
@@ -81,7 +79,4 @@ object Modules {
             .addConverterFactory(gsonConverterFactory)
             .build().create(T::class.java)
     }
-
-
-
 }

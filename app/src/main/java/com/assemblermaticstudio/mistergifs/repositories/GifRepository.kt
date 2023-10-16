@@ -5,14 +5,14 @@ import androidx.annotation.WorkerThread
 import com.assemblermaticstudio.mistergifs.model.Data
 import com.assemblermaticstudio.mistergifs.model.GIF
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
-import com.assemblermaticstudio.mistergifs.services.GifServices
+import com.assemblermaticstudio.mistergifs.services.GifService
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import kotlin.Exception
 
 
 class GifRepository(
-    private val service: GifServices,
+    private val service: GifService,
     private val dao: GifsDAO
 ) {
     suspend fun querySearchText(query: String, limit: Int) = flow<Data> {
