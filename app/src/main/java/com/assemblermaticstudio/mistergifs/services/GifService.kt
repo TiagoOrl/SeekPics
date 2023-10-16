@@ -4,7 +4,7 @@ import com.assemblermaticstudio.mistergifs.model.Data
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface GifServices {
+interface GifService {
 
     @GET("v1/gifs/search")
     suspend fun getGifs(
