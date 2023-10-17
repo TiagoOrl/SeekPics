@@ -2,7 +2,7 @@ package com.assemblermaticstudio.mistergifs.model.gif
 
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class GifData(
     @SerializedName("data")
-    val data: ArrayList<GIF>
+    val list: ArrayList<GIF>
 )

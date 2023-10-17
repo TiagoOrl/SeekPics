@@ -44,7 +44,7 @@ class GifsFragment : Fragment(R.layout.fragment_home) {
                 }
                 is GifsViewModel.State.Success -> {
                     loadingDialog.dismiss()
-                    adapter.submitList(it.dataObject.data)
+                    adapter.submitList(it.dataObject.list)
                     adapter.notifyDataSetChanged()
                 }
                 is GifsViewModel.State.SuccessQuery -> {

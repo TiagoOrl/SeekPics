@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.assemblermaticstudio.mistergifs.model.gif.Data
+import com.assemblermaticstudio.mistergifs.model.gif.GifData
 import com.assemblermaticstudio.mistergifs.model.gif.GIF
 import com.assemblermaticstudio.mistergifs.repositories.GifRepository
 import kotlinx.coroutines.Dispatchers
@@ -67,7 +67,7 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
 
     sealed class State {
         object Loading : State()
-        data class Success(val dataObject: Data) : State()
+        data class Success(val dataObject: GifData) : State()
         data class SuccessQuery(val list: ArrayList<GIF>) : State()
         object SuccessEmpty : State()
         data class Error(val error: Throwable) : State()
