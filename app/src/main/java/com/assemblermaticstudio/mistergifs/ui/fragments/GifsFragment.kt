@@ -10,18 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.utils.HelperUI
 import com.assemblermaticstudio.mistergifs.databinding.FragmentHomeBinding
-import com.assemblermaticstudio.mistergifs.di.Modules
 import com.assemblermaticstudio.mistergifs.ui.adapters.GifListAdapter
-import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
-import org.koin.android.ext.koin.androidContext
+import com.assemblermaticstudio.mistergifs.viewmodel.GifsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.startKoin
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class GifsFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
     private val loadingDialog by lazy { HelperUI.createProgressDialog(context) }
-    private val viewModel by viewModel<MainViewModel>()
+    private val viewModel by viewModel<GifsViewModel>()
     private val adapter by lazy { GifListAdapter(viewModel) }
 
     override fun onCreateView(
@@ -40,22 +37,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewModel.output.observe(viewLifecycleOwner) {
             when(it) {
-                MainViewModel.State.Loading -> loadingDialog.show()
-                is MainViewModel.State.Error -> {
+                GifsViewModel.State.Loading -> loadingDialog.show()
+                is GifsViewModel.State.Error -> {
                     HelperUI.createDialog(it.error.message, requireContext()).show()
                     loadingDialog.dismiss()
                 }
-                is MainViewModel.State.Success -> {
+                is GifsViewModel.State.Success -> {
                     loadingDialog.dismiss()
                     adapter.submitList(it.dataObject.data)
                     adapter.notifyDataSetChanged()
                 }
-                is MainViewModel.State.SuccessQuery -> {
+                is GifsViewModel.State.SuccessQuery -> {
                     loadingDialog.dismiss()
                     adapter.submitList(it.list)
                     adapter.notifyDataSetChanged()
                 }
-                is MainViewModel.State.SuccessEmpty -> {
+                is GifsViewModel.State.SuccessEmpty -> {
                     loadingDialog.dismiss()
                     viewModel.getTrendingGifs(5)
                 }

@@ -2,8 +2,8 @@ package com.assemblermaticstudio.mistergifs.repositories
 
 import android.os.RemoteException
 import androidx.annotation.WorkerThread
-import com.assemblermaticstudio.mistergifs.model.Data
-import com.assemblermaticstudio.mistergifs.model.GIF
+import com.assemblermaticstudio.mistergifs.model.gif.Data
+import com.assemblermaticstudio.mistergifs.model.gif.GIF
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
 import com.assemblermaticstudio.mistergifs.services.GifService
 import kotlinx.coroutines.flow.flow

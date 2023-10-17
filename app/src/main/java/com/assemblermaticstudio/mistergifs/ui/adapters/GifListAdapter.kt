@@ -9,12 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.databinding.CardGifItemBinding
-import com.assemblermaticstudio.mistergifs.model.GIF
-import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
+import com.assemblermaticstudio.mistergifs.model.gif.GIF
+import com.assemblermaticstudio.mistergifs.viewmodel.GifsViewModel
 import com.bumptech.glide.Glide
 
 class GifListAdapter(
-    private val mainViewModel: MainViewModel
+    private val mainViewModel: GifsViewModel
 ) : RecyclerView.Adapter<GifListAdapter.GifViewHolder>() {
 
     private var items: ArrayList<GIF> = arrayListOf()

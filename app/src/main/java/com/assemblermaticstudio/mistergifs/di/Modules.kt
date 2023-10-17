@@ -7,7 +7,7 @@ import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
 import com.assemblermaticstudio.mistergifs.persistence.GifsDB
 import com.assemblermaticstudio.mistergifs.repositories.GifRepository
 import com.assemblermaticstudio.mistergifs.services.GifService
-import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
+import com.assemblermaticstudio.mistergifs.viewmodel.GifsViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -56,7 +56,7 @@ object Modules {
 
     private fun viewModelModules() : Module {
         return module {
-            viewModel { MainViewModel(get()) }
+            viewModel { GifsViewModel(get()) }
         }
     }
 

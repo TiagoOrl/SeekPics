@@ -1,6 +1,6 @@
 package com.assemblermaticstudio.mistergifs.services
 
-import com.assemblermaticstudio.mistergifs.model.Data
+import com.assemblermaticstudio.mistergifs.model.gif.Data
 import retrofit2.http.GET
 import retrofit2.http.Query
 

@@ -1,4 +1,4 @@
-package com.assemblermaticstudio.mistergifs.model
+package com.assemblermaticstudio.mistergifs.model.gif
 
 import androidx.room.Entity
 import com.google.gson.annotations.SerializedName

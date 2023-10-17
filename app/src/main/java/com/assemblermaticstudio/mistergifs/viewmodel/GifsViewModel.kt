@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.assemblermaticstudio.mistergifs.model.Data
-import com.assemblermaticstudio.mistergifs.model.GIF
+import com.assemblermaticstudio.mistergifs.model.gif.Data
+import com.assemblermaticstudio.mistergifs.model.gif.GIF
 import com.assemblermaticstudio.mistergifs.repositories.GifRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val gifRepository: GifRepository) : ViewModel() {
+class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
 
     private val _output = MutableLiveData<State>()
     val output: LiveData<State> = _output

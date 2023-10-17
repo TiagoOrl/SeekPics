@@ -7,14 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.databinding.ActivityMainBinding
 import com.assemblermaticstudio.mistergifs.di.Modules
-import com.assemblermaticstudio.mistergifs.ui.fragments.HomeFragment
+import com.assemblermaticstudio.mistergifs.ui.fragments.GifsFragment
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val homeFragment = HomeFragment()
+    private val homeFragment = GifsFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +46,4 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
-
-
 }
