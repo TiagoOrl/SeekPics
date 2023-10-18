@@ -1,5 +1,6 @@
 package com.assemblermaticstudio.mistergifs.ui.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -58,11 +59,25 @@ class ImagesListAdapter(
                 binding.ivFavImgButton.setBackgroundResource(R.drawable.add_fav)
 
             ivFavBtn.setOnClickListener {
-
+                imagesViewModel.toggleFavourite(image)
+                if (image.fav)
+                    ivFavBtn.setBackgroundResource(R.drawable.fav)
+                else {
+                    items.remove(image)
+                    ivFavBtn.setBackgroundResource(R.drawable.add_fav)
+                }
+                notifyDataSetChanged()
             }
 
             ivShareBtn.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, image.source.original)
+                    type = "text/plain"
+                }
 
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                binding.root.context.startActivity(shareIntent)
             }
         }
     }

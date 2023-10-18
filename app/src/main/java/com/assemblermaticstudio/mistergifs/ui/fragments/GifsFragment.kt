@@ -56,6 +56,10 @@ class GifsFragment : Fragment(R.layout.fragment_home) {
                     loadingDialog.dismiss()
                     viewModel.getTrendingGifs(5)
                 }
+                is GifsViewModel.State.EmptyFavs -> {
+                    loadingDialog.dismiss()
+                }
+                else -> {}
             }
         }
         initViews()

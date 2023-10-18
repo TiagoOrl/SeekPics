@@ -61,7 +61,12 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
             gifRepository.queryFavGifs()
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
-                .collect{ _output.postValue(State.SuccessQuery(it)) }
+                .collect{
+                    if (it.isEmpty())
+                        _output.postValue(State.EmptyFavs)
+                    else
+                        _output.postValue(State.SuccessQuery(it))
+                }
         }
     }
 
@@ -69,6 +74,8 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
         object Loading : State()
         data class Success(val dataObject: GifData) : State()
         data class SuccessQuery(val list: ArrayList<GIF>) : State()
+
+        object EmptyFavs: State()
         object SuccessEmpty : State()
         data class Error(val error: Throwable) : State()
     }

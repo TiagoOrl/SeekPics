@@ -49,11 +49,46 @@ class ImagesViewModel(
         }
     }
 
+    fun getAllLocal() {
+        viewModelScope.launch(Dispatchers.IO) {
+            imageRepository.queryAllCached()
+                .onStart { _output.postValue(State.Loading) }
+                .catch { _output.postValue(State.Error(it)) }
+                .collect{
+                    if (it.isEmpty())
+                        _output.postValue(State.SuccessEmpty)
+                    else
+                        _output.postValue(State.SuccessQuery(it))
+                }
+        }
+    }
+
+    fun getFavourites() {
+        viewModelScope.launch(Dispatchers.IO) {
+            imageRepository.queryFavourites()
+                .onStart { _output.postValue(State.Loading) }
+                .catch { _output.postValue(State.Error(it)) }
+                .collect {
+                    if (it.isEmpty())
+                        _output.postValue(State.EmptyFavs)
+                    else
+                        _output.postValue(State.SuccessQuery(it))
+                }
+        }
+    }
+
+    fun toggleFavourite(image: Image) {
+        image.fav = !image.fav
+        viewModelScope.launch {
+            imageRepository.toggleFavourite(image)
+        }
+    }
 
     sealed class State {
         object Loading : State()
         data class SuccessGet(val dataObject: ImageData) : State()
         data class SuccessQuery(val list: ArrayList<Image>) : State()
+        object EmptyFavs: State()
         object SuccessEmpty : State()
         data class Error(val error: Throwable) : State()
     }

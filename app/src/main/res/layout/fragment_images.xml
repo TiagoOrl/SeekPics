@@ -100,6 +100,13 @@
             android:orientation="horizontal">
 
             <CheckBox
+                android:id="@+id/chk_any"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:text="Any" />
+
+            <CheckBox
                 android:id="@+id/chk_landscape"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

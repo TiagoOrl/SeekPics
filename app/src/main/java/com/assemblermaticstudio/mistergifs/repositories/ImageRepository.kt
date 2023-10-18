@@ -1,7 +1,6 @@
 package com.assemblermaticstudio.mistergifs.repositories
 
 
-import android.os.RemoteException
 import com.assemblermaticstudio.mistergifs.model.image.Image
 import kotlinx.coroutines.flow.flow
 import com.assemblermaticstudio.mistergifs.model.image.ImageData
@@ -10,7 +9,7 @@ import com.assemblermaticstudio.mistergifs.services.PexelsService
 import retrofit2.HttpException
 
 class ImageRepository(
-    private val service: PexelsService,
+    private val webService: PexelsService,
     private val dao: ImageDAO
 ) {
     private val auth = "npTHK9OOwf4xe0LaSaV2pFzSNosH3UIfUP85TuOyjFCneLa1Y0SdBazy"
@@ -22,7 +21,7 @@ class ImageRepository(
         locale: String
     ) = flow<ImageData> {
         try {
-            val outList = service.searchImages(
+            val outList = webService.searchImages(
                 query,
                 orientation,
                 page,
@@ -39,7 +38,8 @@ class ImageRepository(
 
     fun getCurated(perPage: Int = 1) = flow<ImageData> {
         try {
-            val outList = service.getCurated(perPage, auth)
+            val outList = webService.getCurated(perPage, auth)
+            dao.insertAll(outList.list)
             emit(outList)
         } catch (ex: HttpException) {
             throw Exception(ex.message ?: "Não foi possivel fazer a busca no momento!")

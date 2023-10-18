@@ -57,11 +57,15 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
                     loadingDialog.dismiss()
                     viewModel.getCuratedImages(15)
                 }
+                is ImagesViewModel.State.EmptyFavs -> {
+                    loadingDialog.dismiss()
+                }
+                else -> {}
             }
         }
 
         initViews()
-        viewModel.getCuratedImages(15)
+        viewModel.getAllLocal()
     }
 
     private fun initRecyclerView() {
@@ -71,6 +75,7 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
 
     private fun initViews() {
         binding.sbLimit.max = 50
+        binding.sbLimit.progress = 5
         binding.sbLimit.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, pos: Int, p2: Boolean) {
                 HelperUI.closeKeyboard(requireActivity())
@@ -91,8 +96,45 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
                     binding.tvCount.text = imagesCount.toString()
                 }
             }
-
         })
+
+        binding.chkLandscape.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
+                orientation = "landscape"
+                binding.chkPortrait.isChecked = false
+                binding.chkSquare.isChecked = false
+                binding.chkAny.isChecked = false
+            }
+        }
+
+        binding.chkPortrait.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
+                orientation = "portrait"
+                binding.chkLandscape.isChecked = false
+                binding.chkSquare.isChecked = false
+                binding.chkAny.isChecked = false
+            }
+        }
+
+        binding.chkSquare.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
+                orientation = "square"
+                binding.chkLandscape.isChecked = false
+                binding.chkPortrait.isChecked = false
+                binding.chkAny.isChecked = false
+            }
+        }
+
+        binding.chkAny.isChecked = true
+        binding.chkAny.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                orientation = "any"
+                binding.chkSquare.isChecked = false
+                binding.chkLandscape.isChecked = false
+                binding.chkPortrait.isChecked = false
+            }
+        }
+
         binding.chpFind.setOnClickListener {
             HelperUI.closeKeyboard(requireActivity())
             if (binding.etSearchImg.text.toString() != "")
@@ -101,6 +143,11 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
                     orientation,
                     1,
                     imagesCount)
+        }
+
+        binding.chpFavImgsBtn.setOnClickListener {
+            HelperUI.closeKeyboard(requireActivity())
+            viewModel.getFavourites()
         }
     }
 }
