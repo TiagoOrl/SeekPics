@@ -13,7 +13,7 @@ data class Image(
     @SerializedName("photographer")
     val by: String,
     @SerializedName("avg_color")
-    val avgColor: Int,
+    val avgColor: String,
     @Embedded
     @SerializedName("src")
     val source: Source,
