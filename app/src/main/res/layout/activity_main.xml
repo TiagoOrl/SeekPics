@@ -10,7 +10,7 @@
     tools:context=".ui.MainActivity">
 
 
-   <androidx.fragment.app.FragmentContainerView
+    <androidx.fragment.app.FragmentContainerView
        android:id="@+id/fragment_main"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
@@ -19,15 +19,14 @@
        app:layout_constraintEnd_toEndOf="parent"
        />
 
-   <com.google.android.material.navigation.NavigationView
+    <include layout="@layout/toolbar_main"/>
+
+    <com.google.android.material.navigation.NavigationView
        android:id="@+id/nv_main"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:layout_gravity="start"
        app:menu="@menu/main_nav"
-       />
     />
-
-    <include layout="@layout/toolbar_main"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
