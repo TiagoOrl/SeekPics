@@ -13,6 +13,7 @@ import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.databinding.ActivityMainBinding
 import com.assemblermaticstudio.mistergifs.di.Modules
 import com.assemblermaticstudio.mistergifs.ui.fragments.GifsFragment
+import com.assemblermaticstudio.mistergifs.utils.HelperUI
 import com.google.android.material.navigation.NavigationView
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -21,7 +22,6 @@ import org.koin.core.context.startKoin
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private val homeFragment = GifsFragment()
-    private lateinit var drawerToggle: ActionBarDrawerToggle
     private lateinit var mainDrawer: DrawerLayout
     private lateinit var toolbar: Toolbar
 
@@ -31,7 +31,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val view = binding.root
         setContentView(view)
 
-        initializeNavDrawer()
+        toolbar = findViewById(R.id.toolbar)
+        mainDrawer = binding.dlMain
+        HelperUI.initializeNavDrawer(toolbar, mainDrawer, this, binding)
 
         startKoin {
             androidContext(applicationContext)
@@ -56,23 +58,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
         })
-    }
-
-    private fun initializeNavDrawer() {
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        mainDrawer = binding.dlMain
-        drawerToggle = ActionBarDrawerToggle(
-            this,
-            mainDrawer,
-            toolbar,
-            R.string.nav_open,
-            R.string.nav_close
-        )
-
-        mainDrawer.addDrawerListener(drawerToggle)
-        drawerToggle.syncState()
-        binding.nvMain.setNavigationItemSelectedListener(this)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
