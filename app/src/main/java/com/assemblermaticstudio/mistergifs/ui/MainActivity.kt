@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -13,6 +12,7 @@ import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.databinding.ActivityMainBinding
 import com.assemblermaticstudio.mistergifs.di.Modules
 import com.assemblermaticstudio.mistergifs.ui.fragments.GifsFragment
+import com.assemblermaticstudio.mistergifs.ui.fragments.ImagesFragment
 import com.assemblermaticstudio.mistergifs.utils.HelperUI
 import com.google.android.material.navigation.NavigationView
 import org.koin.android.ext.koin.androidContext
@@ -21,7 +21,8 @@ import org.koin.core.context.startKoin
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
-    private val homeFragment = GifsFragment()
+    private val gifsFragment = GifsFragment()
+    private val imagesFragment = ImagesFragment()
     private lateinit var mainDrawer: DrawerLayout
     private lateinit var toolbar: Toolbar
 
@@ -46,15 +47,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .beginTransaction()
             .addToBackStack(null)
             .setReorderingAllowed(true)
-            .add(R.id.fragment_main, homeFragment)
+            .add(R.id.fragment_main, gifsFragment)
             .commit()
 
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val startMain = Intent(Intent.ACTION_MAIN)
-                startMain.addCategory(Intent.CATEGORY_HOME)
-                startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(startMain)
+                if (supportFragmentManager.fragments.size > 1)
+                    supportFragmentManager.popBackStack()
+                else {
+                    val startMain = Intent(Intent.ACTION_MAIN)
+                    startMain.addCategory(Intent.CATEGORY_HOME)
+                    startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(startMain)
+                }
             }
 
         })
@@ -62,10 +67,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.opt_gifs) {
-            println("GIFS")
+            if (!supportFragmentManager.fragments.contains(gifsFragment)) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_main, gifsFragment)
+                    .commit()
+            }
         }
         if (item.itemId == R.id.opt_images) {
-            println("IMAGES")
+            if (!supportFragmentManager.fragments.contains(imagesFragment)) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_main, imagesFragment)
+                    .commit()
+            }
         }
         mainDrawer.closeDrawer(GravityCompat.START)
         return true

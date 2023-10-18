@@ -13,6 +13,7 @@ class ImageRepository(
     private val service: PexelsService,
     private val dao: ImageDAO
 ) {
+    private val auth = "npTHK9OOwf4xe0LaSaV2pFzSNosH3UIfUP85TuOyjFCneLa1Y0SdBazy"
     fun getBySearch(
         query: String,
         orientation: String?,
@@ -26,7 +27,8 @@ class ImageRepository(
                 orientation,
                 page,
                 perPage,
-                locale
+                locale,
+                auth
             )
             dao.insertAll(outList.list)
             emit(outList)
@@ -37,10 +39,10 @@ class ImageRepository(
 
     fun getCurated(perPage: Int = 1) = flow<ImageData> {
         try {
-            val outList = service.getCurated(perPage)
+            val outList = service.getCurated(perPage, auth)
             emit(outList)
         } catch (ex: HttpException) {
-            throw RemoteException(ex.message ?: "Não foi possivel fazer a busca no momento!")
+            throw Exception(ex.message ?: "Não foi possivel fazer a busca no momento!")
         }
     }
 

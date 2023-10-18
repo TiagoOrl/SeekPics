@@ -7,9 +7,11 @@ import com.assemblermaticstudio.mistergifs.persistence.GifsDB
 import com.assemblermaticstudio.mistergifs.persistence.ImageDAO
 import com.assemblermaticstudio.mistergifs.persistence.ImageDB
 import com.assemblermaticstudio.mistergifs.repositories.GifRepository
+import com.assemblermaticstudio.mistergifs.repositories.ImageRepository
 import com.assemblermaticstudio.mistergifs.services.GifService
 import com.assemblermaticstudio.mistergifs.services.PexelsService
 import com.assemblermaticstudio.mistergifs.viewmodel.GifsViewModel
+import com.assemblermaticstudio.mistergifs.viewmodel.ImagesViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -35,9 +37,22 @@ object Modules {
     }
 
 
+    private fun databaseModules(context: Context) : Module {
+        return module {
+            single<GifsDAO> {
+                val db = Factory.createDatabaseInstance<GifsDB>(context, "gifs")
+                db.gifsDao()
+            }
+            single<ImageDAO> {
+                val db = Factory.createDatabaseInstance<ImageDB>(context, "image")
+                db.imageDAO()
+            }
+        }
+    }
+
     private fun networkModules(): Module {
         return module {
-            single {
+            factory {
                 val interceptor = HttpLoggingInterceptor {
                     Log.e(OK_HTTP, it)
                 }
@@ -48,7 +63,7 @@ object Modules {
                     .build()
             }
 
-            single {
+            factory {
                 GsonConverterFactory.create(GsonBuilder().create())
             }
         }
@@ -69,6 +84,7 @@ object Modules {
     private fun repositoryModules() : Module {
         return module {
             single<GifRepository> { GifRepository(get(), get()) }
+            single<ImageRepository> { ImageRepository(get(), get()) }
         }
     }
 
@@ -77,18 +93,8 @@ object Modules {
             viewModel {
                 GifsViewModel(get())
             }
-        }
-    }
-
-    private fun databaseModules(context: Context) : Module {
-        return module {
-            single<GifsDAO> {
-                val db = Factory.createDatabaseInstance<GifsDB>(context, "gifs")
-                db.gifsDao()
-            }
-            single<ImageDAO> {
-                val db = Factory.createDatabaseInstance<ImageDB>(context, "image")
-                db.imageDAO()
+            viewModel {
+                ImagesViewModel(get())
             }
         }
     }
