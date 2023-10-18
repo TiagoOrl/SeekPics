@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (supportFragmentManager.fragments.size > 1)
-                    supportFragmentManager.popBackStack()
+                if (supportFragmentManager.fragments.size > 2)
+                    supportFragmentManager.popBackStackImmediate()
                 else {
                     val startMain = Intent(Intent.ACTION_MAIN)
                     startMain.addCategory(Intent.CATEGORY_HOME)
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val stackSize = supportFragmentManager.fragments.size
-        if (stackSize > 1)
+        if (stackSize > 2)
             supportFragmentManager.popBackStackImmediate()
 
         if (item.itemId == R.id.opt_gifs) {

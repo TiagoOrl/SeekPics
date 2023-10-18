@@ -11,8 +11,10 @@ import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.databinding.FragmentImagesBinding
 import com.assemblermaticstudio.mistergifs.ui.adapters.ImagesListAdapter
 import com.assemblermaticstudio.mistergifs.utils.HelperUI
+import com.assemblermaticstudio.mistergifs.utils.Helpers
 import com.assemblermaticstudio.mistergifs.viewmodel.ImagesViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 class ImagesFragment : Fragment(R.layout.fragment_images) {
     private lateinit var binding: FragmentImagesBinding
@@ -59,6 +61,7 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
                 }
                 is ImagesViewModel.State.EmptyFavs -> {
                     loadingDialog.dismiss()
+                    adapter.notifyDataSetChanged()
                 }
                 else -> {}
             }
@@ -75,7 +78,7 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
 
     private fun initViews() {
         binding.sbLimit.max = 50
-        binding.sbLimit.progress = 5
+        binding.sbLimit.progress = 10
         binding.sbLimit.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, pos: Int, p2: Boolean) {
                 HelperUI.closeKeyboard(requireActivity())
@@ -137,12 +140,18 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
 
         binding.chpFind.setOnClickListener {
             HelperUI.closeKeyboard(requireActivity())
+
             if (binding.etSearchImg.text.toString() != "")
                 viewModel.searchImages(
                     binding.etSearchImg.text.toString(),
                     orientation,
                     1,
-                    imagesCount)
+                    imagesCount,
+                    Helpers.getLocale())
+        }
+
+        binding.chpCurated.setOnClickListener {
+            viewModel.getCuratedImages(imagesCount)
         }
 
         binding.chpFavImgsBtn.setOnClickListener {

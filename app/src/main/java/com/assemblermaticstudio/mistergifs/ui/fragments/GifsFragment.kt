@@ -58,6 +58,7 @@ class GifsFragment : Fragment(R.layout.fragment_home) {
                 }
                 is GifsViewModel.State.EmptyFavs -> {
                     loadingDialog.dismiss()
+                    adapter.notifyDataSetChanged()
                 }
                 else -> {}
             }
