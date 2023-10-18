@@ -10,5 +10,7 @@ data class Source (
     @SerializedName("large2x")
     val large2x: String,
     @SerializedName("medium")
-    val medium: String
+    val medium: String,
+    @SerializedName("tiny")
+    val tiny: String
 )

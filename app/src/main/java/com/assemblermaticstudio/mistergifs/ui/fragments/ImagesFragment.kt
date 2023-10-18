@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.databinding.FragmentImagesBinding
@@ -73,7 +74,7 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
 
     private fun initRecyclerView() {
         binding.rvImages.adapter = adapter
-        binding.rvImages.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvImages.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
     private fun initViews() {

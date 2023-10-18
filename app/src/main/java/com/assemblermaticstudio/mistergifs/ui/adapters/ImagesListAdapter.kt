@@ -46,7 +46,7 @@ class ImagesListAdapter(
         fun bind(image: Image) {
             Glide
                 .with(itemView)
-                .load(image.source.medium)
+                .load(image.source.tiny)
                 .error(R.drawable.ic_launcher_background)
                 .into(ivImage)
 
