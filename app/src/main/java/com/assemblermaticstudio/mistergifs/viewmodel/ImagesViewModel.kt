@@ -40,6 +40,15 @@ class ImagesViewModel(
         }
     }
 
+    fun getCuratedImages(perPage: Int  = 15) {
+        viewModelScope.launch(Dispatchers.IO) {
+            imageRepository.getCurated(perPage)
+                .onStart { _output.postValue(State.Loading) }
+                .catch { _output.postValue(State.Error(it)) }
+                .collect { _output.postValue(State.SuccessGet(it)) }
+        }
+    }
+
 
     sealed class State {
         object Loading : State()

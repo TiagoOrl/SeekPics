@@ -24,8 +24,8 @@ class GifListAdapter(
         return GifViewHolder(binding)
     }
 
-    override fun onBindViewHolder(p0: GifViewHolder, index: Int) {
-        p0.bind(items[index])
+    override fun onBindViewHolder(holder: GifViewHolder, index: Int) {
+        holder.bind(items[index])
     }
 
     override fun getItemCount(): Int {

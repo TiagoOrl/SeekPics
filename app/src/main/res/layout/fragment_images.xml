@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.MainActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
+        <EditText
+            android:id="@+id/et_searchImg"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:hint="search image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chp_find"
+            android:layout_width="80dp"
+            android:layout_height="54dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="20dp"
+            android:text="find"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            app:chipBackgroundColor="#B3E7FF"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="67dp">
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/sb_limit"
+            android:layout_width="198dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/sb_limit"
+            app:layout_constraintTop_toTopOf="@id/sb_limit"
+            app:layout_constraintBottom_toBottomOf="@id/sb_limit"
+            android:layout_marginStart="8dp"
+            android:textSize="18sp"
+            android:text="5"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chp_curated"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="20dp"
+            android:textSize="20sp"
+            app:chipBackgroundColor="#B3E7FF"
+            android:text="curated"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/chk_landscape"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:text="landscape" />
+            <CheckBox
+                android:id="@+id/chk_portrait"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:text="portrait" />
+            <CheckBox
+                android:id="@+id/chk_square"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:text="square"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </HorizontalScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="67dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chp_fav_imgs_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="50dp"
+            android:textSize="20sp"
+            app:chipBackgroundColor="#F8CA7B"
+            android:text="Show Favourites"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_images"
+        android:layout_width="match_parent"
+        android:layout_height="428dp"
+
+        android:scrollbars="vertical"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

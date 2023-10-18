@@ -3,10 +3,12 @@
     <group>
         <item
             android:id="@+id/opt_gifs"
+            android:icon="@drawable/baseline_gif_24"
             android:title="GIFs" />
 
         <item
             android:id="@+id/opt_images"
+            android:icon="@drawable/baseline_image_24"
             android:title="Images" />
     </group>
 

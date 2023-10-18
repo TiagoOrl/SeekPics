@@ -70,8 +70,7 @@ class GifsFragment : Fragment(R.layout.fragment_home) {
     private fun initViews() {
         binding.findGif.setOnClickListener {
             HelperUI.closeKeyboard(requireActivity());
-            if (binding.counSelTv.text.toString().toInt() < 1)
-                binding.counSelTv.text = 1.toString()
+
             if (!binding.searchEt.text.toString().equals(""))
                 viewModel.searchGif(binding.searchEt.text.toString(), binding.counSelTv.text.toString().toInt())
         }
@@ -83,10 +82,10 @@ class GifsFragment : Fragment(R.layout.fragment_home) {
             viewModel.getTrendingGifs(binding.counSelTv.text.toString().toInt())
         }
 
-        binding.gifsCountSb.max = 22
+        binding.gifsCountSb .max = 22
         binding.gifsCountSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                HelperUI.closeKeyboard(requireActivity());
+                HelperUI.closeKeyboard(requireActivity())
                 val pos = p1 + 1
                 binding.counSelTv.text = pos.toString()
             }
