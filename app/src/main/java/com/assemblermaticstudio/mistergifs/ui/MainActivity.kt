@@ -66,6 +66,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val stackSize = supportFragmentManager.fragments.size
+        if (stackSize > 1)
+            supportFragmentManager.popBackStackImmediate()
+
         if (item.itemId == R.id.opt_gifs) {
             if (!supportFragmentManager.fragments.contains(gifsFragment)) {
                 supportFragmentManager
