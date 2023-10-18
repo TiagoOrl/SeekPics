@@ -15,10 +15,10 @@ class ImageRepository(
 ) {
     fun getBySearch(
         query: String,
-        orientation: String,
-        page: Int = 1,
-        perPage: Int = 15,
-        locale: String = "en-US"
+        orientation: String?,
+        page: Int,
+        perPage: Int,
+        locale: String
     ) = flow<ImageData> {
         try {
             val outList = service.searchImages(
