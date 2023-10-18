@@ -15,7 +15,7 @@ class GifRepository(
     private val service: GifService,
     private val dao: GifsDAO
 ) {
-    suspend fun querySearchText(query: String, limit: Int) = flow<GifData> {
+    fun getByText(query: String, limit: Int) = flow<GifData> {
         try {
             val outList = service.getGifs(query, limit)
             dao.insertAll(outList.list)
@@ -26,7 +26,7 @@ class GifRepository(
         }
     }
 
-    suspend fun queryTrending(limit: Int) = flow<GifData> {
+    fun getTrending(limit: Int) = flow<GifData> {
         try {
             val outList = service.getTrendingGifs(limit = limit)
             dao.insertAll(outList.list)
@@ -37,7 +37,7 @@ class GifRepository(
         }
     }
 
-    suspend fun queryAllGifsFromDB() = flow<ArrayList<GIF>> {
+    fun queryAllGifsFromDB() = flow<ArrayList<GIF>> {
         try {
             val outList = dao.loadAllGifs()
             emit(outList as ArrayList<GIF>)
@@ -47,7 +47,7 @@ class GifRepository(
         }
     }
 
-    suspend fun getFavGifs() = flow<ArrayList<GIF>> {
+    fun queryFavGifs() = flow<ArrayList<GIF>> {
         try {
             val outList = dao.queryFavGifs()
             emit(outList as ArrayList<GIF>)

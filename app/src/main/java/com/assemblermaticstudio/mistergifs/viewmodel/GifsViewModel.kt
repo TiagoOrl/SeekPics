@@ -19,7 +19,7 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
 
     fun searchGif(name: String, limit: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            gifRepository.querySearchText(name, limit)
+            gifRepository.getByText(name, limit)
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
                 .collect { _output.postValue(State.Success(it)) }
@@ -28,7 +28,7 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
 
     fun getTrendingGifs(limit: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            gifRepository.queryTrending(limit)
+            gifRepository.getTrending(limit)
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
                 .collect { _output.postValue(State.Success(it)) }
@@ -58,7 +58,7 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
 
     fun getFavouriteGifs() {
         viewModelScope.launch(Dispatchers.IO) {
-            gifRepository.getFavGifs()
+            gifRepository.queryFavGifs()
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
                 .collect{ _output.postValue(State.SuccessQuery(it)) }
