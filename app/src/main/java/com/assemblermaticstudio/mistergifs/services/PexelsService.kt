@@ -10,7 +10,9 @@ interface PexelsService {
     suspend fun searchImages(
         @Query("query") query: String,
         @Query("orientation") orientation: String,
-        @Query("per_page") perPage: Int
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
+        @Query("locale") locale: String
     ) : ImageData
 
     @GET("v1/curated")
