@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .beginTransaction()
             .addToBackStack(null)
             .setReorderingAllowed(true)
-            .add(R.id.fragment_main, gifsFragment)
+            .add(R.id.fragment_main, imagesFragment)
             .commit()
 
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
