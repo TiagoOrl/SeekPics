@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.assemblermaticstudio.mistergifs.model.image.Image
-import com.assemblermaticstudio.mistergifs.model.image.ImageData
 import com.assemblermaticstudio.mistergifs.repositories.ImageRepository
+import com.assemblermaticstudio.mistergifs.model.image.ImageData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
@@ -36,7 +35,7 @@ class ImagesViewModel(
             )
             .onStart { _output.postValue(State.Loading) }
             .catch { _output.postValue(State.Error(it)) }
-            .collect { _output.postValue(State.SuccessGet(it)) }
+            .collect { _output.postValue(State.SuccessGet<ImageData>(it)) }
         }
     }
 
@@ -45,7 +44,7 @@ class ImagesViewModel(
             imageRepository.getCurated(perPage)
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
-                .collect { _output.postValue(State.SuccessGet(it)) }
+                .collect { _output.postValue(State.SuccessGet<ImageData>(it)) }
         }
     }
 
@@ -58,7 +57,7 @@ class ImagesViewModel(
                     if (it.isEmpty())
                         _output.postValue(State.SuccessEmpty)
                     else
-                        _output.postValue(State.SuccessQuery(it))
+                        _output.postValue(State.SuccessQuery<Image>(it))
                 }
         }
     }
@@ -72,7 +71,7 @@ class ImagesViewModel(
                     if (it.isEmpty())
                         _output.postValue(State.EmptyFavs)
                     else
-                        _output.postValue(State.SuccessQuery(it))
+                        _output.postValue(State.SuccessQuery<Image>(it))
                 }
         }
     }
@@ -82,14 +81,5 @@ class ImagesViewModel(
         viewModelScope.launch {
             imageRepository.toggleFavourite(image)
         }
-    }
-
-    sealed class State {
-        object Loading : State()
-        data class SuccessGet(val dataObject: ImageData) : State()
-        data class SuccessQuery(val list: ArrayList<Image>) : State()
-        object EmptyFavs: State()
-        object SuccessEmpty : State()
-        data class Error(val error: Throwable) : State()
     }
 }

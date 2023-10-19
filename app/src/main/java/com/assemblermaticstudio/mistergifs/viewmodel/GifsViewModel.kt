@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.assemblermaticstudio.mistergifs.model.gif.GifData
 import com.assemblermaticstudio.mistergifs.model.gif.GIF
+import com.assemblermaticstudio.mistergifs.model.gif.GifData
 import com.assemblermaticstudio.mistergifs.repositories.GifRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -22,7 +22,7 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
             gifRepository.getByText(name, limit)
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
-                .collect { _output.postValue(State.Success(it)) }
+                .collect { _output.postValue(State.SuccessGet<GifData>(it)) }
         }
     }
 
@@ -31,7 +31,7 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
             gifRepository.getTrending(limit)
                 .onStart { _output.postValue(State.Loading) }
                 .catch { _output.postValue(State.Error(it)) }
-                .collect { _output.postValue(State.Success(it)) }
+                .collect { _output.postValue(State.SuccessGet<GifData>(it)) }
         }
     }
 
@@ -44,7 +44,7 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
                     if (it.isEmpty())
                         _output.postValue(State.SuccessEmpty)
                     else
-                        _output.postValue(State.SuccessQuery(it))
+                        _output.postValue(State.SuccessQuery<GIF>(it))
                 }
         }
     }
@@ -65,18 +65,9 @@ class GifsViewModel(private val gifRepository: GifRepository) : ViewModel() {
                     if (it.isEmpty())
                         _output.postValue(State.EmptyFavs)
                     else
-                        _output.postValue(State.SuccessQuery(it))
+                        _output.postValue(State.SuccessQuery<GIF>(it))
                 }
         }
     }
 
-    sealed class State {
-        object Loading : State()
-        data class Success(val dataObject: GifData) : State()
-        data class SuccessQuery(val list: ArrayList<GIF>) : State()
-
-        object EmptyFavs: State()
-        object SuccessEmpty : State()
-        data class Error(val error: Throwable) : State()
-    }
 }

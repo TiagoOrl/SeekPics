@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.utils.HelperUI
 import com.assemblermaticstudio.mistergifs.databinding.FragmentHomeBinding
+import com.assemblermaticstudio.mistergifs.model.gif.GIF
+import com.assemblermaticstudio.mistergifs.model.gif.GifData
 import com.assemblermaticstudio.mistergifs.ui.adapters.GifListAdapter
 import com.assemblermaticstudio.mistergifs.viewmodel.GifsViewModel
+import com.assemblermaticstudio.mistergifs.viewmodel.State
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GifsFragment : Fragment(R.layout.fragment_home) {
@@ -37,26 +40,26 @@ class GifsFragment : Fragment(R.layout.fragment_home) {
 
         viewModel.output.observe(viewLifecycleOwner) {
             when(it) {
-                GifsViewModel.State.Loading -> loadingDialog.show()
-                is GifsViewModel.State.Error -> {
+                State.Loading -> loadingDialog.show()
+                is State.Error -> {
                     HelperUI.createDialog(it.error.message, requireContext()).show()
                     loadingDialog.dismiss()
                 }
-                is GifsViewModel.State.Success -> {
+                is State.SuccessGet<*> -> {
                     loadingDialog.dismiss()
-                    adapter.submitList(it.dataObject.list)
+                    adapter.submitList((it.dataRes as GifData).list)
                     adapter.notifyDataSetChanged()
                 }
-                is GifsViewModel.State.SuccessQuery -> {
+                is State.SuccessQuery<*> -> {
                     loadingDialog.dismiss()
-                    adapter.submitList(it.list)
+                    adapter.submitList(it.list as ArrayList<GIF>)
                     adapter.notifyDataSetChanged()
                 }
-                is GifsViewModel.State.SuccessEmpty -> {
+                is State.SuccessEmpty -> {
                     loadingDialog.dismiss()
                     viewModel.getTrendingGifs(5)
                 }
-                is GifsViewModel.State.EmptyFavs -> {
+                is State.EmptyFavs -> {
                     loadingDialog.dismiss()
                     adapter.notifyDataSetChanged()
                 }

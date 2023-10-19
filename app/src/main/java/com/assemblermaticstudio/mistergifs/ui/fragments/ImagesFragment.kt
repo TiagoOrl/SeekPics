@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.databinding.FragmentImagesBinding
+import com.assemblermaticstudio.mistergifs.model.image.Image
+import com.assemblermaticstudio.mistergifs.model.image.ImageData
 import com.assemblermaticstudio.mistergifs.ui.adapters.ImagesListAdapter
 import com.assemblermaticstudio.mistergifs.utils.HelperUI
 import com.assemblermaticstudio.mistergifs.utils.Helpers
 import com.assemblermaticstudio.mistergifs.viewmodel.ImagesViewModel
+import com.assemblermaticstudio.mistergifs.viewmodel.State
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
@@ -41,26 +44,26 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
 
         viewModel.output.observe(viewLifecycleOwner) {
             when(it) {
-                ImagesViewModel.State.Loading -> loadingDialog.show()
-                is ImagesViewModel.State.Error -> {
+                State.Loading -> loadingDialog.show()
+                is State.Error -> {
                     HelperUI.createDialog(it.error.message, requireContext()).show()
                     loadingDialog.dismiss()
                 }
-                is ImagesViewModel.State.SuccessGet -> {
+                is State.SuccessGet<*> -> {
                     loadingDialog.dismiss()
-                    adapter.submitList(it.dataObject.list)
+                    adapter.submitList((it.dataRes as ImageData).list)
                     adapter.notifyDataSetChanged()
                 }
-                is ImagesViewModel.State.SuccessQuery -> {
+                is State.SuccessQuery<*> -> {
                     loadingDialog.dismiss()
-                    adapter.submitList(it.list)
+                    adapter.submitList(it.list as ArrayList<Image>)
                     adapter.notifyDataSetChanged()
                 }
-                is ImagesViewModel.State.SuccessEmpty -> {
+                is State.SuccessEmpty -> {
                     loadingDialog.dismiss()
                     viewModel.getCuratedImages(15)
                 }
-                is ImagesViewModel.State.EmptyFavs -> {
+                is State.EmptyFavs -> {
                     loadingDialog.dismiss()
                     adapter.notifyDataSetChanged()
                 }
