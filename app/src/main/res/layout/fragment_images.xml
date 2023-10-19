@@ -20,26 +20,66 @@
         >
         <EditText
             android:id="@+id/et_searchImg"
-            android:layout_width="190dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:hint="search image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="20dp"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chp_find"
-            android:layout_width="80dp"
-            android:layout_height="54dp"
-            app:layout_constraintEnd_toEndOf="parent"
+        <HorizontalScrollView
+            android:layout_width="200dp"
+            android:layout_height="60dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="20dp"
-            android:text="find"
-            android:textSize="20sp"
-            android:textAlignment="center"
-            app:chipBackgroundColor="#B3E7FF"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chp_find"
+                    android:layout_width="80dp"
+                    android:layout_height="54dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="find"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    app:chipBackgroundColor="#B3E7FF"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chp_curated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="54dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="20sp"
+                    app:chipBackgroundColor="#B3E7FF"
+                    android:text="curated"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chp_fav_imgs_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="54dp"
+                    android:layout_marginEnd="5dp"
+                    android:textSize="20sp"
+                    app:chipBackgroundColor="#F8CA7B"
+                    android:text="Favourites"
+                    />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -70,19 +110,6 @@
             android:layout_marginStart="8dp"
             android:textSize="18sp"
             android:text="5"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chp_curated"
-            android:layout_width="wrap_content"
-            android:layout_height="54dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="20dp"
-            android:textSize="20sp"
-            app:chipBackgroundColor="#B3E7FF"
-            android:text="curated"
-            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -128,38 +155,15 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
     </HorizontalScrollView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_3"
-        android:layout_width="match_parent"
-        android:layout_height="67dp"
-        app:layout_constraintEnd_toEndOf="@id/cl_2"
-        app:layout_constraintTop_toBottomOf="@id/cl_2"
-        >
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chp_fav_imgs_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="54dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="50dp"
-            android:textSize="20sp"
-            app:chipBackgroundColor="#F8CA7B"
-            android:text="Show Favourites"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/rv_images"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        app:layout_constraintTop_toBottomOf="@id/cl_3"
-        app:layout_constraintEnd_toEndOf="@id/cl_3"
-        app:layout_constraintStart_toStartOf="@id/cl_3"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="470dp"
+        app:layout_constraintTop_toBottomOf="@id/cl_2"
+        app:layout_constraintEnd_toEndOf="@id/cl_2"
+        app:layout_constraintEnd_toStartOf="@id/cl_2"
 
         android:scrollbars="vertical"/>
 
