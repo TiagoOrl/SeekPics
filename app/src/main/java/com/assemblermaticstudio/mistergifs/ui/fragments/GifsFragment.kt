@@ -10,18 +10,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.assemblermaticstudio.mistergifs.R
 import com.assemblermaticstudio.mistergifs.utils.HelperUI
 import com.assemblermaticstudio.mistergifs.databinding.FragmentHomeBinding
-import com.assemblermaticstudio.mistergifs.di.Modules
+import com.assemblermaticstudio.mistergifs.model.gif.GIF
+import com.assemblermaticstudio.mistergifs.model.gif.GifData
 import com.assemblermaticstudio.mistergifs.ui.adapters.GifListAdapter
-import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
-import org.koin.android.ext.koin.androidContext
+import com.assemblermaticstudio.mistergifs.viewmodel.GifsViewModel
+import com.assemblermaticstudio.mistergifs.viewmodel.State
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.startKoin
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class GifsFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
     private val loadingDialog by lazy { HelperUI.createProgressDialog(context) }
-    private val viewModel by viewModel<MainViewModel>()
+    private val viewModel by viewModel<GifsViewModel>()
     private val adapter by lazy { GifListAdapter(viewModel) }
 
     override fun onCreateView(
@@ -40,25 +40,30 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewModel.output.observe(viewLifecycleOwner) {
             when(it) {
-                MainViewModel.State.Loading -> loadingDialog.show()
-                is MainViewModel.State.Error -> {
+                State.Loading -> loadingDialog.show()
+                is State.Error -> {
                     HelperUI.createDialog(it.error.message, requireContext()).show()
                     loadingDialog.dismiss()
                 }
-                is MainViewModel.State.Success -> {
+                is State.SuccessGet<*> -> {
                     loadingDialog.dismiss()
-                    adapter.submitList(it.dataObject.data)
+                    adapter.submitList((it.dataRes as GifData).list)
                     adapter.notifyDataSetChanged()
                 }
-                is MainViewModel.State.SuccessQuery -> {
+                is State.SuccessQuery<*> -> {
                     loadingDialog.dismiss()
-                    adapter.submitList(it.list)
+                    adapter.submitList(it.list as ArrayList<GIF>)
                     adapter.notifyDataSetChanged()
                 }
-                is MainViewModel.State.SuccessEmpty -> {
+                is State.SuccessEmpty -> {
                     loadingDialog.dismiss()
                     viewModel.getTrendingGifs(5)
                 }
+                is State.EmptyFavs -> {
+                    loadingDialog.dismiss()
+                    adapter.notifyDataSetChanged()
+                }
+                else -> {}
             }
         }
         initViews()
@@ -73,8 +78,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun initViews() {
         binding.findGif.setOnClickListener {
             HelperUI.closeKeyboard(requireActivity());
-            if (binding.counSelTv.text.toString().toInt() < 1)
-                binding.counSelTv.text = 1.toString()
+
             if (!binding.searchEt.text.toString().equals(""))
                 viewModel.searchGif(binding.searchEt.text.toString(), binding.counSelTv.text.toString().toInt())
         }
@@ -86,10 +90,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewModel.getTrendingGifs(binding.counSelTv.text.toString().toInt())
         }
 
-        binding.gifsCountSb.max = 22
+        binding.gifsCountSb .max = 22
         binding.gifsCountSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                HelperUI.closeKeyboard(requireActivity());
+                HelperUI.closeKeyboard(requireActivity())
                 val pos = p1 + 1
                 binding.counSelTv.text = pos.toString()
             }

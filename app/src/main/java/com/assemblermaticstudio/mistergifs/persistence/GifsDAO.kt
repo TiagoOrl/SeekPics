@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.Query
 import androidx.room.Update
-import com.assemblermaticstudio.mistergifs.model.GIF
+import com.assemblermaticstudio.mistergifs.model.gif.GIF
 
 @Dao
 interface GifsDAO {

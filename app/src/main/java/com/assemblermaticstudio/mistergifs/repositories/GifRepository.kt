@@ -2,8 +2,9 @@ package com.assemblermaticstudio.mistergifs.repositories
 
 import android.os.RemoteException
 import androidx.annotation.WorkerThread
-import com.assemblermaticstudio.mistergifs.model.Data
-import com.assemblermaticstudio.mistergifs.model.GIF
+import com.assemblermaticstudio.mistergifs.BuildConfig
+import com.assemblermaticstudio.mistergifs.model.gif.GifData
+import com.assemblermaticstudio.mistergifs.model.gif.GIF
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
 import com.assemblermaticstudio.mistergifs.services.GifService
 import kotlinx.coroutines.flow.flow
@@ -15,10 +16,11 @@ class GifRepository(
     private val service: GifService,
     private val dao: GifsDAO
 ) {
-    suspend fun querySearchText(query: String, limit: Int) = flow<Data> {
+    private val auth = BuildConfig.GIF_KEY
+    fun getByText(query: String, limit: Int) = flow<GifData> {
         try {
-            val outList = service.getGifs(query, limit)
-            dao.insertAll(outList.data)
+            val outList = service.getGifs(query, limit, auth)
+            dao.insertAll(outList.list)
             emit(outList)
         }
         catch (ex: HttpException) {
@@ -26,10 +28,10 @@ class GifRepository(
         }
     }
 
-    suspend fun queryTrending(limit: Int) = flow<Data> {
+    fun getTrending(limit: Int) = flow<GifData> {
         try {
-            val outList = service.getTrendingGifs(limit = limit)
-            dao.insertAll(outList.data)
+            val outList = service.getTrendingGifs(limit, auth)
+            dao.insertAll(outList.list)
             emit(outList)
         }
         catch (ex: HttpException) {
@@ -37,7 +39,7 @@ class GifRepository(
         }
     }
 
-    suspend fun queryAllGifsFromDB() = flow<ArrayList<GIF>> {
+    fun queryAllGifsFromDB() = flow<ArrayList<GIF>> {
         try {
             val outList = dao.loadAllGifs()
             emit(outList as ArrayList<GIF>)
@@ -47,7 +49,7 @@ class GifRepository(
         }
     }
 
-    suspend fun getFavGifs() = flow<ArrayList<GIF>> {
+    fun queryFavGifs() = flow<ArrayList<GIF>> {
         try {
             val outList = dao.queryFavGifs()
             emit(outList as ArrayList<GIF>)

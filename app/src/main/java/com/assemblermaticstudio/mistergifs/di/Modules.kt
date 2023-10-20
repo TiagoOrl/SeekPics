@@ -2,12 +2,16 @@ package com.assemblermaticstudio.mistergifs.di
 
 import android.content.Context
 import android.util.Log
-import androidx.room.Room
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
 import com.assemblermaticstudio.mistergifs.persistence.GifsDB
+import com.assemblermaticstudio.mistergifs.persistence.ImageDAO
+import com.assemblermaticstudio.mistergifs.persistence.ImageDB
 import com.assemblermaticstudio.mistergifs.repositories.GifRepository
+import com.assemblermaticstudio.mistergifs.repositories.ImageRepository
 import com.assemblermaticstudio.mistergifs.services.GifService
-import com.assemblermaticstudio.mistergifs.viewmodel.MainViewModel
+import com.assemblermaticstudio.mistergifs.services.PexelsService
+import com.assemblermaticstudio.mistergifs.viewmodel.GifsViewModel
+import com.assemblermaticstudio.mistergifs.viewmodel.ImagesViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,7 +19,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import retrofit2.Retrofit
+
 import retrofit2.converter.gson.GsonConverterFactory
 
 object Modules {
@@ -23,12 +27,32 @@ object Modules {
     private const val OK_HTTP = "OkHttp"
 
     fun load(applicationContext: Context) {
-        loadKoinModules(createRoomService(applicationContext) + networkModules() + repositoryModules() + viewModelModules())
+        loadKoinModules(
+    databaseModules(applicationContext) +
+            networkModules() +
+            webServicesModules() +
+            repositoryModules() +
+            viewModelModules()
+        )
+    }
+
+
+    private fun databaseModules(context: Context) : Module {
+        return module {
+            single<GifsDAO> {
+                val db = Factory.createDatabaseInstance<GifsDB>(context, "gifs")
+                db.gifsDao()
+            }
+            single<ImageDAO> {
+                val db = Factory.createDatabaseInstance<ImageDB>(context, "image")
+                db.imageDAO()
+            }
+        }
     }
 
     private fun networkModules(): Module {
         return module {
-            single {
+            factory {
                 val interceptor = HttpLoggingInterceptor {
                     Log.e(OK_HTTP, it)
                 }
@@ -39,44 +63,39 @@ object Modules {
                     .build()
             }
 
-            single {
+            factory {
                 GsonConverterFactory.create(GsonBuilder().create())
             }
+        }
+    }
 
+
+
+    private fun webServicesModules(): Module {
+        return module {
             single {
-                createRetrofitService<GifService>(get(), get())
+                Factory.createRetrofitService<GifService>(get(), get(), "https://api.giphy.com/")
+            }
+            single {
+                Factory.createRetrofitService<PexelsService>(get(), get(), "https://api.pexels.com/")
             }
         }
     }
     private fun repositoryModules() : Module {
         return module {
-            single<GifRepository> {GifRepository(get(), get())}
+            single<GifRepository> { GifRepository(get(), get()) }
+            single<ImageRepository> { ImageRepository(get(), get()) }
         }
     }
 
     private fun viewModelModules() : Module {
         return module {
-            viewModel { MainViewModel(get()) }
-        }
-    }
-
-    private fun createRoomService(context: Context) : Module {
-        return module {
-            single<GifsDAO> {
-                val db = Room.databaseBuilder(
-                    context,
-                    GifsDB::class.java, "gifs"
-                ).build()
-                db.gifsDao()
+            viewModel {
+                GifsViewModel(get())
+            }
+            viewModel {
+                ImagesViewModel(get())
             }
         }
-    }
-
-    private inline fun <reified T> createRetrofitService(okHttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory): T {
-        return Retrofit.Builder()
-            .baseUrl("https://api.giphy.com/")
-            .client(okHttpClient)
-            .addConverterFactory(gsonConverterFactory)
-            .build().create(T::class.java)
     }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/opt_gifs"
+            android:icon="@drawable/baseline_gif_24"
+            android:title="GIFs" />
+
+        <item
+            android:id="@+id/opt_images"
+            android:icon="@drawable/baseline_image_24"
+            android:title="Images" />
+    </group>
+
+</menu>
