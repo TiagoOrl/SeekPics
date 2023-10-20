@@ -9,12 +9,12 @@ interface GifService {
     suspend fun getGifs(
         @Query("q") query: String,
         @Query("limit") limit: Int,
-        @Query("api_key") key: String = "HSI8cCsrvwXUCxvsGvW3gXvFEoIfNJ6w",
+        @Query("api_key") key: String,
     ): GifData
 
     @GET("v1/gifs/trending")
     suspend fun getTrendingGifs(
-        @Query("api_key") key: String = "HSI8cCsrvwXUCxvsGvW3gXvFEoIfNJ6w",
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
+        @Query("api_key") key: String
     ): GifData
 }

@@ -1,6 +1,7 @@
 package com.assemblermaticstudio.mistergifs.repositories
 
 
+import com.assemblermaticstudio.mistergifs.BuildConfig
 import com.assemblermaticstudio.mistergifs.model.image.Image
 import kotlinx.coroutines.flow.flow
 import com.assemblermaticstudio.mistergifs.model.image.ImageData
@@ -12,7 +13,7 @@ class ImageRepository(
     private val webService: PexelsService,
     private val dao: ImageDAO
 ) {
-    private val auth = "npTHK9OOwf4xe0LaSaV2pFzSNosH3UIfUP85TuOyjFCneLa1Y0SdBazy"
+    private val auth = BuildConfig.PEXELS_KEY
     fun getBySearch(
         query: String,
         orientation: String?,

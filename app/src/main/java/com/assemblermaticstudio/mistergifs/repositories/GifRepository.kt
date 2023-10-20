@@ -2,6 +2,7 @@ package com.assemblermaticstudio.mistergifs.repositories
 
 import android.os.RemoteException
 import androidx.annotation.WorkerThread
+import com.assemblermaticstudio.mistergifs.BuildConfig
 import com.assemblermaticstudio.mistergifs.model.gif.GifData
 import com.assemblermaticstudio.mistergifs.model.gif.GIF
 import com.assemblermaticstudio.mistergifs.persistence.GifsDAO
@@ -15,9 +16,10 @@ class GifRepository(
     private val service: GifService,
     private val dao: GifsDAO
 ) {
+    private val auth = BuildConfig.GIF_KEY
     fun getByText(query: String, limit: Int) = flow<GifData> {
         try {
-            val outList = service.getGifs(query, limit)
+            val outList = service.getGifs(query, limit, auth)
             dao.insertAll(outList.list)
             emit(outList)
         }
@@ -28,7 +30,7 @@ class GifRepository(
 
     fun getTrending(limit: Int) = flow<GifData> {
         try {
-            val outList = service.getTrendingGifs(limit = limit)
+            val outList = service.getTrendingGifs(limit, auth)
             dao.insertAll(outList.list)
             emit(outList)
         }
