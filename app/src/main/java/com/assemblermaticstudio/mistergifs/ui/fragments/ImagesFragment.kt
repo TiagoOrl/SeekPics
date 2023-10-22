@@ -24,7 +24,7 @@ class ImagesFragment : Fragment(R.layout.fragment_images) {
     private lateinit var binding: FragmentImagesBinding
     private val loadingDialog by lazy { HelperUI.createProgressDialog(context) }
     private val viewModel by viewModel<ImagesViewModel>()
-    private val adapter by lazy { ImagesListAdapter(viewModel) }
+    private val adapter by lazy { ImagesListAdapter(viewModel, requireActivity().supportFragmentManager) }
     private var orientation: String = "any"
     private var imagesCount = 10
 

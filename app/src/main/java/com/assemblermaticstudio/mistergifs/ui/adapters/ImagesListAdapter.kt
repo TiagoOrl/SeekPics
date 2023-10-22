@@ -3,19 +3,22 @@ package com.assemblermaticstudio.mistergifs.ui.adapters
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.assemblermaticstudio.mistergifs.R
 import com.bumptech.glide.Glide
 
 import com.assemblermaticstudio.mistergifs.databinding.CardImgItemBinding
 import com.assemblermaticstudio.mistergifs.model.image.Image
+import com.assemblermaticstudio.mistergifs.ui.fragments.ImageVisualizeFragment
 import com.assemblermaticstudio.mistergifs.viewmodel.ImagesViewModel
 
 class ImagesListAdapter(
-    private val imagesViewModel: ImagesViewModel
+    private val imagesViewModel: ImagesViewModel,
+    private val fragmentManager: FragmentManager
 ) : RecyclerView.Adapter<ImagesListAdapter.ImageViewHolder>() {
-
     private var items: ArrayList<Image> = arrayListOf()
+    private val imageVisualizeFragment = ImageVisualizeFragment()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val binding = CardImgItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -49,6 +52,18 @@ class ImagesListAdapter(
                 .load(image.source.tiny)
                 .error(R.drawable.ic_launcher_background)
                 .into(ivImage)
+
+            ivImage.setOnClickListener {
+                imageVisualizeFragment.setImageData(image)
+                if (!fragmentManager.fragments.contains(imageVisualizeFragment)) {
+                    fragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .setReorderingAllowed(true)
+                        .add(R.id.fragment_main, imageVisualizeFragment)
+                        .commit()
+                }
+            }
 
             tvTitle.text = image.title
             tvImgBy.text = image.by
