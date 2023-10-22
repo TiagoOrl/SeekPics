@@ -2,6 +2,7 @@ package com.assemblermaticstudio.mistergifs.utils
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -71,6 +72,17 @@ class HelperUI {
             drawerLayout.addDrawerListener(drawerToggle)
             drawerToggle.syncState()
             binding.nvMain.setNavigationItemSelectedListener(activity as NavigationView.OnNavigationItemSelectedListener)
+        }
+
+        fun shareLink(link: String, context: Context) {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, link)
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            context.startActivity(shareIntent)
         }
     }
 }
